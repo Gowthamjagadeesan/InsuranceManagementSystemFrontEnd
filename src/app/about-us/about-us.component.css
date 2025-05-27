@@ -1,0 +1,20 @@
+.quote{
+    color: rgb(118, 118, 118)
+}
+.message{
+    background-image: url('/about-us.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    width: 100vw; 
+    height: 100vh;
+    
+}
+.hover-effect:hover{
+    
+
+    background-color: #00c3ff; /* Light red background on hover */
+    color: #000000; /* Optional: text color change */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    
+}

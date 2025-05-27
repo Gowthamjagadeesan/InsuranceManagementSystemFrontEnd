@@ -1,0 +1,28 @@
+<div class="message">
+    
+<div class="container d-flex justify-content-center align-items-center">
+    <h1 class="pt-5 mt-5 display-6 fw-bold  text-center position-relative" style="top:30px;">
+        What our customer says
+    </h1>
+</div>
+<p class="mt-3 pt-3 display-7 text-center position-relative quote ">
+    Reliable, fast, and hassle-free! This insurance service truly puts <br> customers first — I feel secure every step
+    of
+    the way.
+</p>
+<div class="container mt-4 pt-4 d-flex justify-content-center align-items-center">
+    @for(feedback of feedbacks ; track feedback.id){
+        <div class="card hover-effect ms-3" style="width:300px; height: 200px;">
+            <div class="card-body">
+    
+                <p class="card-text text-center position-relative">"{{feedback.comments}}”
+                </p>
+            </div>
+            <div class="card-body d-flex justify-content-center align-items-center">
+                <img src="profile{{feedback.id}}.jpg" height="50px" width="50px" style="border-radius: 50%;">
+                <p class="ms-3 mt-2 fw-bold">{{feedback.name}}</p>
+            </div>
+        </div>
+    }
+</div>
+</div>
