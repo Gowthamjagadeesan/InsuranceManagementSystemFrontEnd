@@ -8,8 +8,8 @@
                     <div class="mb-3 mt-3">
                         <div class="mb-3">
                             <label for="uName" class="form-label">Name</label>
-                            <input type="text" class="form-control" formControlName="uName" id="text" placeholder="Enter Your UserName">
-                            <div *ngIf="myForm.controls['uName'].invalid && myForm.controls['uName'].touched"
+                            <input type="text" class="form-control" formControlName="name" id="text" placeholder="Enter Your UserName">
+                            <div *ngIf="myForm.controls['name'].invalid && myForm.controls['name'].touched"
                               class="alert alert-danger alert-custom mt-2 mx-auto ">
                               Username Length Must Be 5-15
                           </div>
@@ -25,8 +25,8 @@
                        
                         <div class="mb-3">
                             <label for="roles" class="form-label">Roles</label>
-                            <select class="form-select" id="roles" formControlName="role">
-                                <option value="customer" selected>Customer</option>
+                            <select class="form-select" id="roles" formControlName="roles">
+                                <option value="Customer"  selected>Customer</option>
                                 <option value="agent">Agent</option>
                             </select>
                         </div>

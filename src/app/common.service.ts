@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class CommonService {
-
+  
   constructor(private router:Router) { 
 
   }
@@ -31,7 +31,7 @@ export class CommonService {
     return this.isLogedIn;
   }
   onSubmit(form) : void{
-      localStorage.setItem("username",form.get("uName").value);
+      localStorage.setItem("username",form.get("name").value);
       localStorage.setItem("password",form.get("password").value);
       // this.isLogedIn=true; 
       this.router.navigate(["/login"]);
