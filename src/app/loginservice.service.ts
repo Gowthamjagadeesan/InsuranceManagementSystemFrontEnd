@@ -35,22 +35,23 @@ export class LoginserviceService {
   login(user: LoginUser) {
     console.log("In service");
     console.log(user);
-    return this.client.post(this.path, user, { responseType: 'text' }).pipe(
+    return this.client.post(this.path, user, { responseType: 'text' })
+    .pipe(
 
 
       tap(() => {
         // ✅ Set isLogedIn to true only on successful response
         this.isLogedIn = true;
-      }),
-
-      catchError((error) => {
-        if (error.status === 403) {
-          console.error("Access denied: Invalid credentials or insufficient permissions.");
-        } else {
-          console.error("An unexpected error occurred:", error);
-        }
-        return throwError(() => error); // rethrow so the component can handle it too
       })
+
+      // catchError((error) => {
+      //   if (error.status === 403) {
+      //     console.error("Access denied: Invalid credentials or insufficient permissions.");
+      //   } else {
+      //     console.error("An unexpected error occurred:", error);
+      //   }
+      //   return throwError(() => error); // rethrow so the component can handle it too
+      // })
     );
   }
 

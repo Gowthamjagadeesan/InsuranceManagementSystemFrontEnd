@@ -13,7 +13,7 @@ import { RegisterserviceService } from '../registerservice.service';
 })
 export class RegisterComponent implements OnInit {
   myForm:FormGroup;
-
+  custRole:boolean;
   constructor(private router:Router,private fb:FormBuilder,private commonService:CommonService,private regService:RegisterserviceService){
 
   }
@@ -23,7 +23,9 @@ export class RegisterComponent implements OnInit {
       email:['',[Validators.required,Validators.email]],
       password:['',[Validators.required]],
       confirmPassword:['',[Validators.required]],
-      roles:['Customer',[Validators.required]]
+      roles:['Customer',[Validators.required]],
+      customerPhone:[''],
+      customerAddress:[''],
     },{validator:this.passwordMatchValidator})
   }
 
@@ -37,10 +39,34 @@ export class RegisterComponent implements OnInit {
   }
   submit(form) : void{
     if(this.myForm.valid){
-      this.regService.Register(form.value).subscribe(response => {console.log(response)})
-      this.router.navigate(["/login"]);
+      const role = this.myForm.get('roles') ?.value;
+      console.log(role)
+      if(role == "Customer"){
+          this.submitCustomer(form);
+      }
+      else{
+        this.submitAgent(form);
+      }
+      
       // this.commonService.onSubmit(form)
     }
   }
-  
+  submitCustomer(form):void{
+    console.log("inside submit customer", form.value);
+   
+    this.regService.registerBoth1(form.value).subscribe(response => {console.log(response)})
+    
+    const role=form.value.roles
+    console.log(role)
+    this.router.navigate(["/login",role]);
+  }
+  submitAgent(form):void{
+    console.log("inside submit Agent", form.value);
+   
+    this.regService.registerBoth2(form.value).subscribe(response => {console.log(response)})
+    
+    const role=form.value.roles
+    console.log(role)
+    this.router.navigate(["/login",role]);
+  }
 }

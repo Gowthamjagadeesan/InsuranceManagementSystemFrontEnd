@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonService } from '../common.service';
+import { ListcustomerService } from '../listcustomer.service';
 
 @Component({
   selector: 'customer',
@@ -10,16 +11,13 @@ import { CommonService } from '../common.service';
 export class CustomerComponent {
   customers: Customer[];
   selectedCustomer : Customer | null = null;
-  constructor(private service:CommonService){
-    this.customers = [
-      new Customer(1, "suresh","Gowthamjagadeesan322@gmail.com" , "6382669477", "salem"),
-      new Customer(2, "naresh","Gowthamjagadeesan322@gmail.com" , "6382669477", "salem"),
-      new Customer(3, "ramesh","Gowthamjagadeesan322@gmail.com" , "6382669477", "salem"),
-      new Customer(4, "rajesh","Gowthamjagadeesan322@gmail.com" , "6382669477","salem")]
+  constructor(private listCust:ListcustomerService){
+    listCust.getALlCustomer().subscribe(response => console.log(response));
+    listCust.getALlCustomer().subscribe(response => this.customers=response);
   }
   delete(customer:Customer){
 
-    console.log(customer.eid)
+    
 
     let confirmation= confirm("Do you want to delete the Customer")
     if(confirmation){
@@ -32,17 +30,23 @@ export class CustomerComponent {
 }
 
 export class Customer {
-  eid: number;
-  ename: string;
+  customerId: number;
+  name: string;
   email: string;
-  phone: string;
-  eadd: string;
+  customerPhone: string;
+  customerAddress: string;
+  policies:Policy[];
 
-  constructor(eid: number, ename: string, email: string, phone: string, eadd: string) {
-    this.eid = eid;
-    this.ename = ename;
+  constructor(cid: number, name: string, email: string, phone: string, address: string, policies: Policy[]) {
+    this.customerId = cid;
+    this.name = name;
     this.email = email;
-    this.phone = phone;
-    this.eadd = eadd;
+    this.customerPhone = phone;
+    this.customerAddress = address;
+    this.policies = policies
   }
+}
+export class Policy{
+  policyId: number;
+  policyName:string;
 }

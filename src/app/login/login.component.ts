@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { CommonService } from '../common.service';
 import { LoginserviceService } from '../loginservice.service';
@@ -11,10 +11,13 @@ import { LoginserviceService } from '../loginservice.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  constructor(private router: Router, private commonService: CommonService, private logService: LoginserviceService) {
+export class LoginComponent  {
+  constructor(private router: Router, private commonService: CommonService, private logService: LoginserviceService,private access:ActivatedRoute) {
 
   }
+  
+ 
+  
   token: string;
   // validated(form:NgForm):any {
   //   console.log("validate function calling.......");
@@ -32,8 +35,14 @@ export class LoginComponent {
 
     this.logService.login(form.value).subscribe({
       next: (response) => {
+        localStorage.setItem("token",response);
         console.log("Login successful:", response);
-        this.router.navigate(["/insurance"]);
+        const roles = this.access.snapshot.paramMap.get('role')
+        console.log(roles)
+        if(roles === "Customer"){
+          this.router.navigate(["/cust-home"]);
+        }
+        
       },
       error: (err) => {
         if (err.status === 403) {

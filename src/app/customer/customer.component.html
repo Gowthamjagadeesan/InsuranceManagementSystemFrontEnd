@@ -15,12 +15,12 @@
             <th>ACTION</th>
         </thead>
         <tbody>
-            @for(customer of customers;track customer.eid){
+            @for(customer of customers;track customer.customerId){
                 <tr>
-                    <td class="text-dark">{{customer.ename}}</td>
+                    <td class="text-dark">{{customer.name}}</td>
                     <td class="text-dark">{{customer.email}}</td>
-                    <td class="text-dark">{{customer.phone}}</td>
-                    <td class="text-dark">{{customer.eadd}}</td>
+                    <td class="text-dark">{{customer.customerPhone}}</td>
+                    <td class="text-dark">{{customer.customerAddress}}</td>
                     <td class="text-dark">Policies</td>
                     <td class="text-dark"><button><i class="fa-solid fa-file-pen text-dark"></i></button>
                         <button (click)="delete(customer)"><i class="fa-solid fa-user-xmark" ></i></button>

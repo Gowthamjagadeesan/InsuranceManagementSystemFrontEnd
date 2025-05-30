@@ -5,12 +5,17 @@ import { RegisterComponent } from './register/register.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { InsuranceComponent } from './insurance/insurance.component';
 import { CustomerComponent } from './customer/customer.component';
+import { CustomerHomeComponent } from './customer-home/customer-home.component';
+import { AgentHomeComponent } from './agent-home/agent-home.component';
 
 export const routes: Routes = [
-    {path: "login", component:LoginComponent},
-    {path: "home", component:HomeComponent},
-    {path: "register", component:RegisterComponent},
-    {path: "about-us", component:AboutUsComponent},
-    {path: "insurance", component:InsuranceComponent},
-    {path: "", component:CustomerComponent}
+    { path: "login", component: LoginComponent },
+    { path: "home", component: HomeComponent },
+    { path: "register", component: RegisterComponent },
+    { path: "about-us", component: AboutUsComponent },
+    { path: "insurance", component: InsuranceComponent },
+    { path: "cust-home", component: CustomerHomeComponent },
+    { path: "agent-home", component: AgentHomeComponent },
+    { path: 'login/:role', component: LoginComponent },
+    { path: "", component: CustomerComponent }
 ];
