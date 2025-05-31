@@ -1,0 +1,85 @@
+<div class="message">
+    <div class="container flex-column d-flex justify-content-center align-items-center">
+        <h1 class="pt-5 mt-3 display-7 fw-bold text-center position-relative" style="top:20px;">
+            POLICY INFO
+        </h1>
+        <div class="d-flex align-items-center mt-4">
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-3 mb-4" *ngFor="let policy of policies">
+                <div class="fancy-hover card policy" (click)="openDetails(policy)" data-bs-toggle="modal"
+                    data-bs-target="#details">
+                    <div class="card-body text-center">
+                        <img src="{{policy.policyId}}.png" alt="LOGO" style="height: 80px; width:  80px;">
+                        <p class="card-text mt-4">{{ policy.policyName }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="details" tabindex="-1" aria-labelledby="detailsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow">
+
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="detailsLabel">{{ selectedPolicy?.policyName }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Premium:</strong> ₹{{ selectedPolicy?.premiumAmount }}</p>
+                <p><strong>Coverage:</strong> {{ selectedPolicy?.coverageDetails }}</p>
+                <p><strong>Valid Till:</strong> {{ selectedPolicy?.validityPeriod | date }}</p>
+            </div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update">Update</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="selectedPolicy" class="modal fade" id="update" tabindex="-1" aria-labelledby="updateLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="update(policyForm.value)" #policyForm="ngForm">
+        <div class="modal-header bg-primary text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Policy Id</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedPolicy.policyId" name="policyId" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Policy Name</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedPolicy.policyName" name="policyName" required min="1">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Premium Amount</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedPolicy.premiumAmount" name="premiumAmount"
+              required min="0">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Coverage Details</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedPolicy.coverageDetails"
+              name="coverageDetails" required >
+          </div>
+          <div class="mb-3">
+            <label class="form-label">validity Period</label>
+            <input type="date" class="form-control" [(ngModel)]="selectedPolicy.validityPeriod"
+              name="validityPeriod">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            Update
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

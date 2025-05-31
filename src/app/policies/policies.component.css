@@ -1,0 +1,68 @@
+.hover-effect:hover {
+
+
+    background-color: #01152c;
+    /* Light red background on hover */
+    color: #ffffff;
+    /* Optional: text color change */
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+
+}
+
+.message {
+    background-image: url('/insurance-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 120vh;
+
+}
+
+
+
+
+
+.fancy-hover {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Default shadow */
+}
+
+.fancy-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* Enhanced shadow on hover */
+}
+
+
+.fancy-hover::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #17a2b8, #138496);
+    /* Bootstrap info shades */
+    transition: top 0.4s ease;
+    z-index: 0;
+}
+
+.fancy-hover:hover::before {
+    top: 0;
+}
+
+/* .fancy-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+} */
+
+.fancy-hover * {
+    position: relative;
+    z-index: 1;
+}

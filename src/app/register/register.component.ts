@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
     
     const role=form.value.roles
     console.log(role)
-    this.router.navigate(["/login",role]);
+    this.router.navigate(["/login"]);
   }
   submitAgent(form):void{
     console.log("inside submit Agent", form.value);
@@ -67,6 +67,6 @@ export class RegisterComponent implements OnInit {
     
     const role=form.value.roles
     console.log(role)
-    this.router.navigate(["/login",role]);
+    this.router.navigate(["/login"]);
   }
 }

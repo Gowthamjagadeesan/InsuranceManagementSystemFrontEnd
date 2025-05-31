@@ -7,6 +7,7 @@ import { InsuranceComponent } from './insurance/insurance.component';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { AgentHomeComponent } from './agent-home/agent-home.component';
+import { PoliciesComponent } from './policies/policies.component';
 
 export const routes: Routes = [
     { path: "login", component: LoginComponent },
@@ -17,5 +18,7 @@ export const routes: Routes = [
     { path: "cust-home", component: CustomerHomeComponent },
     { path: "agent-home", component: AgentHomeComponent },
     { path: 'login/:role', component: LoginComponent },
-    { path: "", component: CustomerComponent }
+    { path: "cust-op", component: CustomerComponent },
+    { path: "policy-op", component: PoliciesComponent },
+    { path: "", component: HomeComponent }
 ];

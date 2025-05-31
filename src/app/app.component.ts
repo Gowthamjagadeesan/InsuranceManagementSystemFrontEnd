@@ -14,13 +14,12 @@ import { LoginserviceService } from './loginservice.service';
 export class AppComponent {
   title = 'InsuranceManagementSystemFrontEnd';
 
-  
+  isLogedIn:boolean = false
   constructor(private logClient:LoginserviceService){
-
-  }
-
-  get isLogedIn():boolean{
-    return this.logClient.logStatus();
+    if(logClient.getJWT())
+      {
+     this.isLogedIn=true
+      }
   }
   
 }

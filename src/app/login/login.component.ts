@@ -4,6 +4,8 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 import { HeaderComponent } from '../header/header.component';
 import { CommonService } from '../common.service';
 import { LoginserviceService } from '../loginservice.service';
+import { jwtDecode } from 'jwt-decode';
+
 
 @Component({
   selector: 'login',
@@ -11,13 +13,17 @@ import { LoginserviceService } from '../loginservice.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent  {
-  constructor(private router: Router, private commonService: CommonService, private logService: LoginserviceService,private access:ActivatedRoute) {
+
+
+
+
+export class LoginComponent {
+  constructor(private router: Router, private commonService: CommonService, private logService: LoginserviceService, private access: ActivatedRoute) {
 
   }
-  
- 
-  
+
+
+
   token: string;
   // validated(form:NgForm):any {
   //   console.log("validate function calling.......");
@@ -35,14 +41,21 @@ export class LoginComponent  {
 
     this.logService.login(form.value).subscribe({
       next: (response) => {
-        localStorage.setItem("token",response);
+        localStorage.setItem("token", response);
         console.log("Login successful:", response);
-        const roles = this.access.snapshot.paramMap.get('role')
-        console.log(roles)
-        if(roles === "Customer"){
+        const token = response;
+        const decoded = jwtDecode<JwtPayload>(token);
+        const role: string = decoded.roles ?? 'No role found';
+        console.log(role);
+        if(role === 'agent'){
+          this.router.navigate(["/agent-home"]);
+        }
+        else{
           this.router.navigate(["/cust-home"]);
         }
         
+        
+
       },
       error: (err) => {
         if (err.status === 403) {
@@ -61,4 +74,9 @@ export class LoginComponent  {
 
 
 
+}
+
+interface JwtPayload {
+  roles?: string;
+  // Add other fields if needed
 }

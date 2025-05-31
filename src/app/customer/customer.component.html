@@ -1,38 +1,178 @@
-<div class="container flex-column d-flex justify-content-center align-items-center">
-    <h1 class="pt-5 mt-5 display-6 fw-bold text-center position-relative" style="top:20px;">
-        CUSTOMER INFO
+<div class="background">
+  <div class="container flex-column d-flex justify-content-center align-items-center">
+    <h1 class="pt-5 mt-3 display-6 fw-bold text-center position-relative" style="top:20px;">
+      CUSTOMER INFO
     </h1>
-    <button type="button" class="btn btn-outline btn-success mt-4">Add More Customers</button>
-</div>
-<div class="container d-flex flex-column justify-content-center align-items-center" >
+    <div class="d-flex align-items-center mt-4">
+
+      <search class="w-50 ms-2 d-flex  ">
+        
+        <input type="text" class="form-control   " style="background-color: rgb(237, 250, 252); color: black;" placeholder="Search by name" [(ngModel)]="searchTerm"
+        (input)="filterCustomers()" />
+        <i class="fa-solid fa-magnifying-glass mt-2 mx-2 text-dark fa-1x"></i>
+
+      </search>      <button type="button" class="btn btn-outline btn-success ms-auto" data-bs-toggle="modal" data-bs-target="#add">
+        Add More Customers
+      </button>
+    </div>
+  </div>
+
+  <div class="container d-flex flex-column justify-content-center align-items-center">
     <table class="pt-4 mt-4 table table-info table-hover" style="width:1000px;">
+      <thead>
+        <tr>
+          <th>NAME</th>
+          <th >EMAIL</th>
+          <th>PHONE</th>
+          <th>ADDRESS</th>
+          <th>POLICIES</th>
+          <th class="text-center">ACTION</th>
+          <th class="text-center">ASSIGN POLICY</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of paginatedCustomers(); trackBy: trackByCustomerId">
+          <td class="text-dark">{{customer.name}}</td>
+          <td class="text-dark">{{customer.email}}</td>
+          <td class="text-dark">{{customer.customerPhone}}</td>
+          <td class="text-dark">{{customer.customerAddress}}</td>
+          <td class="text-dark">
+            <button class="btn btn-outline btn-success" data-bs-toggle="modal" data-bs-target="#policy"
+              (click)="loadPolicies(customer)">Policy</button>
+          </td>
+          <td class="text-dark">
+            <button class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#update"
+              (click)="edit(customer)">
+              <i class="fa-solid fa-file-pen text-dark"></i>
+            </button>
+            <button class="btn btn-outline-danger ms-2" (click)="delete(customer)">
+              <i class="fa-solid fa-user-xmark"></i>
+            </button>
+          </td>
+          <td class="text-dark text-center">
+            <button class="btn btn-outline btn-success" data-bs-toggle="modal" data-bs-target="#policy"
+              (click)="loadPolicies(customer)">ASSIGN</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="prevPage()">Previous</button>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="nextPage()">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Add and Update Modals (reuse your existing modals here) -->
+
+</div>
+
+
+
+<!-- Modal for Policy -->
+<div class="modal fade" id="policy" tabindex="-1" aria-labelledby="policyLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+
+      <table class="pt-4 mt-4 table table-info  table-hover">
         <thead>
-            <th>NAME</th>
-            <th>EMAIL</th>
-            <th>PHONE</th>
-            <th>ADDRESS</th>
-            <th>POLICIES</th>
-            <th>ACTION</th>
+          <th class="text-center">Policy Id</th>
+          <th class="text-center">Policy Name</th>
+
         </thead>
         <tbody>
-            @for(customer of customers;track customer.customerId){
-                <tr>
-                    <td class="text-dark">{{customer.name}}</td>
-                    <td class="text-dark">{{customer.email}}</td>
-                    <td class="text-dark">{{customer.customerPhone}}</td>
-                    <td class="text-dark">{{customer.customerAddress}}</td>
-                    <td class="text-dark">Policies</td>
-                    <td class="text-dark"><button><i class="fa-solid fa-file-pen text-dark"></i></button>
-                        <button (click)="delete(customer)"><i class="fa-solid fa-user-xmark" ></i></button>
-                    </td>
-                </tr>
-            }
-            
-          
-            
+          @for(policy of policies;track policy.policyId){
+          <tr>
+            <td class="text-dark text-center">{{policy.policyId}}</td>
+            <td class="text-dark text-center">{{policy.policyType}}</td>
+          </tr>
+          }
         </tbody>
-        
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Modal for AddCustomer -->
+<div class="modal fade" id="add" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="add(custForm)" #custForm="ngForm">
+        <div class="modal-header bg-primary text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Customer Name</label>
+            <input type="text" class="form-control" ngModel name="name" required minlength="3">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Email:</label>
+            <input type="text" class="form-control" ngModel name="email" required min="1">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Phone</label>
+            <input type="number" class="form-control" ngModel name="customerPhone" required min="0">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Address</label>
+            <input type="text" class="form-control" ngModel name="customerAddress" required min="0">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            Add
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-    </table>
-    
+<!-- Modal for Update -->
+<div *ngIf="selectedCustomer" class="modal fade" id="update" tabindex="-1" aria-labelledby="updateLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="update(custForm.value)" #custForm="ngForm">
+        <div class="modal-header bg-primary text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Customer Name</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.name" name="name" required
+              minlength="3">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Email:</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.email" name="email" required min="1">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Phone</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedCustomer.customerPhone" name="customerPhone"
+              required min="0">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Address</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.customerAddress"
+              name="customerAddress" required min="0">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            Update
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

@@ -12,7 +12,9 @@ import { throwError } from 'rxjs';
 export class LoginserviceService {
   user: LoginUser
   path = "http://localhost:9090/auth/authenticate"
-  constructor(private client: HttpClient, private router: Router) { }
+  constructor(private client: HttpClient, private router: Router) {
+
+   }
   public isLogedIn = false;
   //  login(user: LoginUser) {
   //   console.log("Inservice")
@@ -36,13 +38,6 @@ export class LoginserviceService {
     console.log("In service");
     console.log(user);
     return this.client.post(this.path, user, { responseType: 'text' })
-    .pipe(
-
-
-      tap(() => {
-        // ✅ Set isLogedIn to true only on successful response
-        this.isLogedIn = true;
-      })
 
       // catchError((error) => {
       //   if (error.status === 403) {
@@ -52,9 +47,18 @@ export class LoginserviceService {
       //   }
       //   return throwError(() => error); // rethrow so the component can handle it too
       // })
-    );
+    
   }
-
+  getJWT():string
+  {
+    return localStorage.getItem("token")
+  }
+  removeToken()
+  {
+    localStorage.removeItem("token")
+    return true
+  }
+  
   logStatus(): boolean {
     console.log(this.isLogedIn);
     return this.isLogedIn;

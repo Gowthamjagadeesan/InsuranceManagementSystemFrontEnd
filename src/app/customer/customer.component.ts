@@ -1,32 +1,133 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../common.service';
 import { ListcustomerService } from '../listcustomer.service';
+import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'customer',
-  imports: [],
+  imports: [FormsModule, CommonModule],
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.css'
 })
-export class CustomerComponent {
+export class CustomerComponent implements OnInit {
+  policies: Policy[]
   customers: Customer[];
-  selectedCustomer : Customer | null = null;
-  constructor(private listCust:ListcustomerService){
+  filteredCustomers: Customer[] = [];
+  selectedCustomer: Customer | null = null;
+
+
+  searchTerm: string = '';
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+
+  constructor(private listCust: ListcustomerService) {
     listCust.getALlCustomer().subscribe(response => console.log(response));
-    listCust.getALlCustomer().subscribe(response => this.customers=response);
+    listCust.getALlCustomer().subscribe(response => this.customers = response);
   }
-  delete(customer:Customer){
+  ngOnInit(): void {
 
-    
+    this.listCust.getALlCustomer().subscribe(response => {
+      this.customers = response;
+      this.filteredCustomers = [...this.customers]; // initialize filtered list
+    });
 
-    let confirmation= confirm("Do you want to delete the Customer")
-    if(confirmation){
-      let index = this.customers.indexOf(customer);
-      console.log("Index :", index);
-      this.customers.splice(this.customers.indexOf(customer),1);
+  }
+  loadPolicies(customer: Customer) {
+    this.selectedCustomer = customer;
+    this.listCust.getPolicy(customer.customerId).subscribe(
+      {
+        next: (response) => {
+          this.policies = response;
+          console.log(this.policies)
+        }
+      }
+    )
+
+  }
+  edit(customer: Customer) {
+    this.selectedCustomer = { ...customer };
+  }
+  update(customer: Customer) {
+    if (this.selectedCustomer) {
+      console.log(this.selectedCustomer.customerId)
+      customer.customerId = this.selectedCustomer.customerId
+      this.listCust.updateCust(customer).subscribe(
+        {
+          next: (response => console.log(response))
+        }
+      )
+    }
+  }
+  add(custForm: NgForm) {
+
+    const customerData = custForm.value; // This is of type Customer1
+    console.log(customerData);
+
+    this.listCust.saveCust(customerData).subscribe(
+      {
+        next: (response => console.log(response))
+      }
+    )
+    window.location.reload();
+  }
+  delete(customer: Customer) {
+
+
+
+    let confirmation = confirm("Do you want to delete the Customer")
+    if (confirmation) {
+      this.selectedCustomer = customer;
+      this.listCust.deleteCust(customer.customerId).subscribe(
+        {
+          next: (response) => {
+            console.log(response)
+          }
+        }
+      )
+      window.location.reload();
+
       alert("Deleted successfully")
+    }
   }
+
+  filterCustomers(): void {
+    this.filteredCustomers = this.customers.filter(c =>
+      c.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    this.currentPage = 1;
+  }
+
+  paginatedCustomers(): Customer[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredCustomers.slice(start, start + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredCustomers.length / this.itemsPerPage);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) this.currentPage++;
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) this.currentPage--;
+  }
+
+  trackByCustomerId(index: number, customer: Customer): number {
+    return customer.customerId;
+  }
+
 }
+
+
+export class Customer1 {
+  name: string;
+  email: string;
+  customerPhone: string;
+  customerAddress: string;
+  policies: Policy[];
 }
 
 export class Customer {
@@ -35,7 +136,7 @@ export class Customer {
   email: string;
   customerPhone: string;
   customerAddress: string;
-  policies:Policy[];
+  policies: Policy[];
 
   constructor(cid: number, name: string, email: string, phone: string, address: string, policies: Policy[]) {
     this.customerId = cid;
@@ -46,7 +147,7 @@ export class Customer {
     this.policies = policies
   }
 }
-export class Policy{
+export class Policy {
   policyId: number;
-  policyName:string;
+  policyType: string;
 }

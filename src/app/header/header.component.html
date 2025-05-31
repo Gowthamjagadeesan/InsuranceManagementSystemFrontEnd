@@ -37,6 +37,34 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul *ngIf="isLogedIn && role === 'agent' " class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-dark"   routerLink="/agent-home" href="#">HOME</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark"   routerLink="/agent-home" href="#">POLICIES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark"   routerLink="/cust-op" href="#">CUSTOMER</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark"   routerLink="/agent-home" href="#">CLAIM</a>
+                </li>
+            </ul>
+
+            <ul *ngIf="isLogedIn && role === 'customer' " class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-dark"   routerLink="/agent-home" href="#">HOME</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark"   routerLink="/agent-home" href="#">POLICIES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark"   routerLink="/agent-home" href="#">CLAIM</a>
+                </li>
+            </ul>
+
             <!-- Centered Links -->
             <ul class="navbar-nav ms-auto">
                 @if(!isLogedIn){
