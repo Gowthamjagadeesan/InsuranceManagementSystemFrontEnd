@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -8,12 +8,17 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './agent-home.component.css'
 })
 export class AgentHomeComponent {
-  constructor(private route:Router){}
+  constructor(private route:Router){
 
+   
+  }
   openCust(){
     this.route.navigate(["/cust-op"])
   }
   openPolicy(){
     this.route.navigate(['/policy-op'])
+  }
+  openClaim(){
+    this.route.navigate(['/claim'])
   }
 }

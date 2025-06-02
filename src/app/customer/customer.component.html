@@ -50,8 +50,8 @@
             </button>
           </td>
           <td class="text-dark text-center">
-            <button class="btn btn-outline btn-success" data-bs-toggle="modal" data-bs-target="#policy"
-              (click)="loadPolicies(customer)">ASSIGN</button>
+            <button class="btn btn-outline btn-success" data-bs-toggle="modal" data-bs-target="#assign"
+            (click)="edit(customer)">ASSIGN</button>
           </td>
         </tr>
       </tbody>
@@ -85,6 +85,7 @@
         <thead>
           <th class="text-center">Policy Id</th>
           <th class="text-center">Policy Name</th>
+          <th class="text-center">Create Claim</th>
 
         </thead>
         <tbody>
@@ -92,6 +93,8 @@
           <tr>
             <td class="text-dark text-center">{{policy.policyId}}</td>
             <td class="text-dark text-center">{{policy.policyType}}</td>
+            <td class="text-center"><button class="btn btn-outline btn-success " data-bs-toggle="modal" data-bs-target="#createClaim"
+              (click)="createClaim(policy)">Create Claim</button></td>
           </tr>
           }
         </tbody>
@@ -169,6 +172,81 @@
         <div class="modal-footer">
           <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
             Update
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedCustomer" class="modal fade" id="assign" tabindex="-1" aria-labelledby="assignLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+     
+        <div class="modal-header bg-primary text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <table class="pt-4 mt-4 table table-info  table-hover">
+              <th class="text-center">Policy Id</th>
+              <th class="text-center">Policy Name</th>
+              <th class="text-center">Assign</th>
+           
+            @for(policy of policies1;track policy.policyId){
+              <tr>
+                <td class="text-dark text-center">{{policy.policyId}}</td>
+                <td class="text-dark text-center">{{policy.policyName}}</td>
+                  <td class="text-dark text-center">
+                    <button class="btn btn-outline btn-success" (click)="editPol(policy)" data-bs-dismiss="modal">Assign</button>
+                  </td>
+              </tr>
+            }
+          </table>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- Create Claim -->
+<div *ngIf="selectedCustomer" class="modal fade" id="createClaim" tabindex="-1" aria-labelledby="createClaimLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="create(claimForm.value)" #claimForm="ngForm">
+        <div class="modal-header bg-primary text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Customer Id</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedCustomer.customerId"  name="customerId">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Mail</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.email"  name="customerMail">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Policy Id</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedPol.policyId" name="policyId">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Agent Id</label>
+            <input type="number" class="form-control" [(ngModel)]="agent.agentId" name="agentId">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Claim Amount</label>
+            <input type="number" class="form-control" ngModel name="claimAmount">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <input type="text" class="form-control" [(ngModel)]="claimStatus" name="claimStatus"  readonly>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            CREATE
           </button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>

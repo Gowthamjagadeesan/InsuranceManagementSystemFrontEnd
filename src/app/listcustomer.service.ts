@@ -7,10 +7,11 @@ import { Injectable } from '@angular/core';
 })
 export class ListcustomerService {
   path="http://localhost:9090/customer/getAllCustomers";
-  path1="http://localhost:9090/customer/getPolicyByCustomer/"
-  path2="http://localhost:9090/customer/delete/"
-  save="http://localhost:9090/customer/create"
-  update="http://localhost:9090/customer/update"
+  path1="http://localhost:9090/customer/getPolicyByCustomer/";
+  path2="http://localhost:9090/customer/delete/";
+  save="http://localhost:9090/customer/create";
+  update="http://localhost:9090/customer/update";
+  getAgent="http://localhost:9090/agent/getAgentByPolicy/";
   form:Customer[];
   constructor(private client : HttpClient) { 
    
@@ -39,6 +40,10 @@ export class ListcustomerService {
     console.log(custId)
     return this.client.get<Policy[]>(this.path1+custId)
   }
+
+  getAgentByPol(policyId){
+    return this.client.get<Agent>(this.getAgent+policyId);
+  }
 }
 export class Customer1 {
 
@@ -66,6 +71,14 @@ export class Customer {
   //   this.policies = policies
   // }
 }
+
+export class Agent {
+  agentId: number;
+  name: string;
+  email: string;
+  policies:Policy[];
+}
+
 export class Policy{
   policyId: number;
   policyType:string;

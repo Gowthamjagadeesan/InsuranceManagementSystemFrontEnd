@@ -15,13 +15,10 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent  {
   token: string;
-  isLogedIn:boolean
+  //isLogedIn:boolean = false
   role:string
   constructor(private router:Router,private commonService:CommonService, private loginService:LoginserviceService){
-    if(loginService.getJWT())
-      {
-     this.isLogedIn=true
-      }
+   
       if(localStorage.getItem("token")){
         const token = localStorage.getItem("token");
             const decoded = jwtDecode<JwtPayload>(token);
@@ -31,10 +28,18 @@ export class HeaderComponent  {
       }
           
   }
-  
+  get isLogedIn(): boolean{
+    if(this.loginService.getJWT()){
+      return true;
+    }
+    else{
+      return this.loginService.logStatus();
+    }
+  }
+
   logout(){
-    this.loginService.removeToken();
-    this.isLogedIn = false;
+    this.loginService.logout();
+    // this.isLogedIn = false;
     alert("logged out successfully")
     this.router.navigate(["/home"])
    }

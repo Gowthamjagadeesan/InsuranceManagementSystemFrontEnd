@@ -1,0 +1,160 @@
+<!-- <div class="background">
+  <div class="container flex-column d-flex justify-content-center align-items-center">
+    <h1 class="pt-5 mt-3 display-6 fw-bold text-center position-relative" style="top:20px;">
+      Create Claim
+    </h1>
+    <div class="d-flex align-items-center mt-4">
+
+    </div>
+  </div>
+
+  <div class="container d-flex flex-column justify-content-center align-items-center">
+    <table class="pt-4 mt-4 table table-info table-hover" style="width:1000px;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>CUSTOMER ID</th>
+          <th>CUSTOMER EMAIL</th>
+          <th>AGENT ID</th>
+          <th>AMOUNT</th>
+          <th>STATUS</th>
+          <th>BY AMOUNT</th>
+          <th>BY VALIDITY</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let claim of claims">
+          <td class="text-dark">{{claim.claimId}}</td>
+          <td class="text-dark">{{claim.customerId}}</td>
+          <td class="text-dark">{{claim.customerMail}}</td>
+          <td class="text-dark">{{claim.agentId}}</td>
+          <td class="text-dark">{{claim.claimAmount}}</td>
+          <td class="text-dark">{{claim.claimStatus}}</td>
+          <td class="text-dark">
+            <button class="btn btn-outline btn-success" (click)="reviewByAmt(claim.claimId)">REVIEW</button>
+          </td>
+          <td class="text-dark">
+            <button class="btn btn-outline btn-success" (click)="reviewByPeriod(claim.claimId)">REVIEW</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+<div class="background">
+  <div class="container flex-column d-flex justify-content-center align-items-center">
+    <h1 class="pt-5 mt-3 display-6 fw-bold text-center position-relative" style="top:20px;">
+      Create Claim
+    </h1>
+
+    <!-- Search Input -->
+    <div class="d-flex align-items-center mt-4 w-50">
+      <input type="text" class="form-control" placeholder="Search by Claim ID"
+             [(ngModel)]="searchClaimId" (input)="searchByClaimId()" />
+    </div>
+  </div>
+
+  <div class="container d-flex flex-column justify-content-center align-items-center">
+    <table class="pt-4 mt-4 table table-info table-hover" >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>CUSTOMER ID</th>
+          <th>CUSTOMER EMAIL</th>
+          <th>AGENT ID</th>
+          <th>AMOUNT</th>
+          <th>STATUS</th>
+          <th>BY AMOUNT</th>
+          <th>BY VALIDITY</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let claim of paginatedClaims()">
+          <td class="text-dark">{{claim.claimId}}</td>
+          <td class="text-dark">{{claim.customerId}}</td>
+          <td class="text-dark">{{claim.customerMail}}</td>
+          <td class="text-dark">{{claim.agentId}}</td>
+          <td class="text-dark">{{claim.claimAmount}}</td>
+          <td class="text-dark">{{claim.claimStatus}}</td>
+          <td class="text-dark">
+            <button class="btn btn-outline btn-success" (click)="reviewByAmt(claim.claimId)">REVIEW</button>
+          </td>
+          <td class="text-dark">
+            <button class="btn btn-outline btn-success" (click)="reviewByPeriod(claim.claimId)">REVIEW</button>
+          </td>
+          <td class="text-dark">
+            <button class="btn btn-outline btn-success" data-bs-toggle="modal" data-bs-target="#updateClaim" (click)="edit(claim)">UPDATE</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="prevPage()">Previous</button>
+        </li>
+        <li class="page-item disabled">
+          <span class="page-link">{{currentPage}} / {{totalPages()}}</span>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages()">
+          <button class="page-link" (click)="nextPage()">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+<div *ngIf="selectedClaim" class="modal fade" id="updateClaim" tabindex="-1" aria-labelledby="updateClaimLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="update(claimForm.value)" #claimForm="ngForm">
+        <div class="modal-header bg-primary text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Claim Id</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedClaim.claimId"  name="claimId" readonly>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Customer Id</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedClaim.customerId"  name="customerId" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Mail</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedClaim.customerMail"  name="customerMail" >
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Policy Id</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedClaim.policyId" name="policyId" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Agent Id</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedClaim.agentId" name="agentId" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Claim Amount</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedClaim.claimAmount" name="claimAmount">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedClaim.claimStatus" name="claimStatus"  readonly>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            CREATE
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

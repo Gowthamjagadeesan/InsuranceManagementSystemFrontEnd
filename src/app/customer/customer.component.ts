@@ -3,6 +3,8 @@ import { CommonService } from '../common.service';
 import { ListcustomerService } from '../listcustomer.service';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PolicyService } from '../policy.service';
+import { CLaimService } from '../claim.service';
 
 @Component({
   selector: 'customer',
@@ -11,19 +13,32 @@ import { CommonModule } from '@angular/common';
   styleUrl: './customer.component.css'
 })
 export class CustomerComponent implements OnInit {
-  policies: Policy[]
+  policies: Policy[];
+  policies1: Policy1[];
   customers: Customer[];
+  selectedPol: Policy | null = null;
   filteredCustomers: Customer[] = [];
   selectedCustomer: Customer | null = null;
-
-
+  selectedPolicy: Policy1 | null = null;
+  agent: Agent | null = null;
   searchTerm: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 5;
+  claimStatus = "FILLED";
 
-  constructor(private listCust: ListcustomerService) {
+  constructor(private listCust: ListcustomerService, private polService: PolicyService, private claimService: CLaimService) {
     listCust.getALlCustomer().subscribe(response => console.log(response));
     listCust.getALlCustomer().subscribe(response => this.customers = response);
+    polService.getAll().subscribe(
+      {
+        next: (response) => {
+          console.log(response);
+          this.policies1 = response;
+        }
+      }
+    );
+
+
   }
   ngOnInit(): void {
 
@@ -33,6 +48,27 @@ export class CustomerComponent implements OnInit {
     });
 
   }
+
+  assign(custAssign) {
+    console.log(custAssign)
+    console.log(this.selectedCustomer.customerId)
+  }
+
+  createClaim(policy: Policy) {
+    console.log(this.selectedCustomer.customerId);
+    this.selectedPol = policy;
+    console.log(policy.policyId);
+    this.listCust.getAgentByPol(policy.policyId).subscribe({
+      next: (response => {
+        this.agent = response
+        console.log(this.agent);
+        console.log(this.agent.agentId);
+      })
+    })
+
+
+  }
+
   loadPolicies(customer: Customer) {
     this.selectedCustomer = customer;
     this.listCust.getPolicy(customer.customerId).subscribe(
@@ -47,6 +83,28 @@ export class CustomerComponent implements OnInit {
   }
   edit(customer: Customer) {
     this.selectedCustomer = { ...customer };
+  }
+  editPol(policy: any) {
+    this.selectedPolicy = { ...policy };
+    console.log(this.selectedPolicy);
+    console.log(this.selectedCustomer);
+    this.polService.assignToCustomer(this.selectedPolicy.policyId, this.selectedCustomer.customerId, this.selectedPolicy.policyName).subscribe(
+      {
+        next: (response) => {
+          console.log(response)
+        }
+      }
+    )
+  }
+  create(claim: Claim) {
+    console.log(claim);
+    claim.claimStatus="FILLED"
+    this.claimService.createClaim(claim).subscribe({
+      next: (response) =>{
+        console.log(response)
+      }
+    })
+
   }
   update(customer: Customer) {
     if (this.selectedCustomer) {
@@ -147,7 +205,36 @@ export class Customer {
     this.policies = policies
   }
 }
+
+export class Agent {
+  agentId: number;
+  name: string;
+  email: string;
+  policies: AgePolicy[];
+}
+
 export class Policy {
   policyId: number;
   policyType: string;
+}
+export class AgePolicy {
+  policyId: number;
+  policyType: string;
+}
+
+export class Policy1 {
+  policyId: number;
+  policyName: string;
+  premiumAmount: number;
+  coverageDetails: string;
+  validityPeriod: Date;
+}
+
+export class Claim {
+  customerId: number;
+  policyId: number;
+  agentId: number;
+  customerMail:string;
+  claimAmount: number;
+  claimStatus: string;
 }

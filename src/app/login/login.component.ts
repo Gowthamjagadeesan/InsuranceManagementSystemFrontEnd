@@ -47,11 +47,12 @@ export class LoginComponent {
         const decoded = jwtDecode<JwtPayload>(token);
         const role: string = decoded.roles ?? 'No role found';
         console.log(role);
-        if(role === 'agent'){
-          this.router.navigate(["/agent-home"]);
+        sessionStorage.setItem("role",role);
+        if(role === 'customer'){
+          this.router.navigate(["/cust-home"]);
         }
         else{
-          this.router.navigate(["/cust-home"]);
+          this.router.navigate(["/agent-home"]);
         }
         
         

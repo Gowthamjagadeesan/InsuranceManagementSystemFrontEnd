@@ -8,6 +8,7 @@ export class PolicyService {
 
   all="http://localhost:9090/policy/retrieveAll"
   update = "http://localhost:9090/policy/update"
+  assignCust="http://localhost:9090/policy/assignPoliciesToCustomer/"
 
   constructor(private client:HttpClient) { 
 
@@ -19,6 +20,9 @@ export class PolicyService {
   updatePol(policy){
     return this.client.put<Policy>(this.update,policy);
   }
+  assignToCustomer(polId,custId,polName){
+    return this.client.put<Customer>(`${this.assignCust}${polId}/${custId}/${polName}`, {});
+  }
 
 }
 export class Policy{
@@ -27,4 +31,17 @@ export class Policy{
   premiumAmount:number;
   coverageDetails:string;
   validityPeriod:Date;
+}
+export class Customer {
+  customerId: number;
+  name: string;
+  email: string;
+  customerPhone: string;
+  customerAddress: string;
+  policies: Policy1[];
+  }
+
+export class Policy1 {
+  policyId: number;
+  policyType: string;
 }

@@ -8,6 +8,7 @@ import { CustomerComponent } from './customer/customer.component';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { AgentHomeComponent } from './agent-home/agent-home.component';
 import { PoliciesComponent } from './policies/policies.component';
+import { CLaimComponent } from './claim/claim.component';
 
 export const routes: Routes = [
     { path: "login", component: LoginComponent },
@@ -20,5 +21,6 @@ export const routes: Routes = [
     { path: 'login/:role', component: LoginComponent },
     { path: "cust-op", component: CustomerComponent },
     { path: "policy-op", component: PoliciesComponent },
+    { path: "claim", component: CLaimComponent },
     { path: "", component: HomeComponent }
 ];
