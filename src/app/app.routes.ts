@@ -21,13 +21,13 @@ export const routes: Routes = [
     { path: "about-us", component: AboutUsComponent },
     { path: "insurance", component: InsuranceComponent },
     { path: "cust-home", component: CustomerHomeComponent },
-    { path: "agent-home", component: AgentHomeComponent },
+    { path: "agent-home", component: AgentHomeComponent ,canActivate:[authGuard] },
     { path: 'login/:role', component: LoginComponent },
     { path: "cust-op", component: CustomerComponent,canActivate:[authGuard] },
     { path: "policy-op", component: PoliciesComponent },
-    { path: "claim", component: CLaimComponent },
+    { path: "claim", component: CLaimComponent, canActivate:[authGuard] },
     { path: "mypolicy", component: MypolicyComponent },
-    { path: "agent", component: AgentComponent },
+    { path: "agent", component: AgentComponent, canActivate:[authGuard] },
     { path: "myclaim", component: MyclaimComponent },
     { path: "", component: HomeComponent }
 ];
