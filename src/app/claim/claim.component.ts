@@ -30,6 +30,19 @@ export class CLaimComponent {
     );
 
   }
+  deleteClaim(claimId: number) {
+   let confirmation:boolean = confirm(`Are you sure you want to delete claim with ID: ${claimId}?`) 
+   if(confirmation) {
+    this.claimService.deleteClaim(claimId).subscribe({
+      next:(response) => {
+        
+        console.log(response);
+        // window.location.reload();
+      }
+    })
+   }
+   
+  }
   edit(claim){
     this.selectedClaim=claim;
   }

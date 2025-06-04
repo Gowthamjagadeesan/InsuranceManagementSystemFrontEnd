@@ -1,0 +1,188 @@
+<div class="background">
+    <div class="container flex-column d-flex justify-content-center align-items-center">
+      <h1 class="pt-5 mt-3 display-6 fw-bold text-center position-relative" style="top:20px;">
+        AGENT INFO
+      </h1>
+      <div class="d-flex align-items-center mt-4">
+  
+        <search class="w-50 ms-2 d-flex  ">
+          
+          <input type="text" class="form-control   " style="background-color: rgb(237, 250, 252); color: black;" placeholder="Search by name" [(ngModel)]="searchTerm"
+          (input)="filterAgents()" />
+          <i class="fa-solid fa-magnifying-glass mt-2 mx-2 text-dark fa-1x"></i>
+  
+        </search> 
+             <button type="button" class="btn btn-outline btn-success ms-auto" data-bs-toggle="modal" data-bs-target="#add">
+          Add More Agents
+        </button>
+      </div>
+    </div>
+  
+    <div class="container d-flex flex-column justify-content-center align-items-center">
+      <table class="pt-4 mt-4 table table-info table-hover" style="width:1000px;">
+        <thead>
+          <tr>
+            <th>NAME</th>
+            <th>EMAIL</th>
+            <th>POLICIES</th>
+             <th class="text-center">ACTION</th>
+            <th class="text-center">ASSIGN POLICY</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let agent of paginatedAgents(); trackBy: trackByAgentId">
+            <td class="text-dark">{{agent.name}}</td>
+            <td class="text-dark">{{agent.email}}</td>
+            <td class="text-dark">
+              <button class="btn btn-outline btn-success" data-bs-toggle="modal" data-bs-target="#policy"
+                (click)="loadPolicies(agent)">Policy</button>
+            </td>
+             <td class="text-dark">
+              <button class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#update"
+                (click)="edit(agent)">
+                <i class="fa-solid fa-file-pen text-dark"></i>
+              </button>
+              <button class="btn btn-outline-danger ms-2" (click)="delete(agent)">
+                <i class="fa-solid fa-user-xmark"></i>
+              </button>
+            </td>
+            <td class="text-dark text-center">
+              <button class="btn btn-outline btn-success" data-bs-toggle="modal" data-bs-target="#assign"
+              (click)="edit(agent)">ASSIGN</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- Pagination Controls -->
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="prevPage()">Previous</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" (click)="nextPage()">Next</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  
+    <!-- Add and Update Modals (reuse your existing modals here) -->
+  
+  </div>
+  
+  
+<!-- Modal for Policy -->
+<div class="modal fade" id="policy" tabindex="-1" aria-labelledby="policyLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow">
+  
+        <table class="pt-4 mt-4 table table-info  table-hover">
+          <thead>
+            <th class="text-center">Policy Id</th>
+            <th class="text-center">Policy Name</th>
+          </thead>
+          <tbody>
+            @for(policy of policies;track policy.policyId){
+            <tr>
+              <td class="text-dark text-center">{{policy.policyId}}</td>
+              <td class="text-dark text-center">{{policy.assignedPolicies}}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  
+<!-- Modal for AddCustomer -->
+<div class="modal fade" id="add" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow">
+        <form (ngSubmit)="add(agentForm)" #agentForm="ngForm">
+          <div class="modal-header bg-info text-white">
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Agent Name</label>
+              <input type="text" class="form-control" ngModel name="name" required minlength="3">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Agent Email:</label>
+              <input type="text" class="form-control" ngModel name="email" required min="1">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+              Add
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="selectedAgent" class="modal fade" id="update" tabindex="-1" aria-labelledby="updateLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="update(agentForm.value)" #agentForm="ngForm">
+        <div class="modal-header bg-info text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Agent Name</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedAgent.name" name="name" required
+              minlength="3">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Agent Email:</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedAgent.email" name="email" required min="1">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            Update
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="selectedAgent" class="modal fade" id="assign" tabindex="-1" aria-labelledby="assignLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+     
+        <div class="modal-header bg-info text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <table class="pt-4 mt-4 table table-info  table-hover">
+              <th class="text-center">Policy Id</th>
+              <th class="text-center">Policy Name</th>
+              <th class="text-center">Assign</th>
+           
+            @for(policy of policies1;track policy.policyId){
+              <tr>
+                <td class="text-dark text-center">{{policy.policyId}}</td>
+                <td class="text-dark text-center">{{policy.policyName}}</td>
+                  <td class="text-dark text-center">
+                    <button class="btn btn-outline btn-success" (click)="editPol(policy)" data-bs-dismiss="modal">Assign</button>
+                  </td>
+              </tr>
+            }
+          </table>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

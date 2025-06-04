@@ -1,43 +1,77 @@
 <div class="message">
-    <div class="container flex-column d-flex justify-content-center align-items-center">
-        <h1 class="pt-5 mt-3 display-7 fw-bold text-center position-relative" style="top:20px;">
-            POLICY INFO
-        </h1>
-        <div class="d-flex align-items-center mt-4">
-        </div>
+  <div class="info">
+    <div class="container flex-column d-flex justify-content-center align-items-center position-relative">
+      <h1 class="pt-5 mt-4 display-7 fw-bold text-center">POLICY INFO</h1>
+
+      @if(role === 'admin') {
+      <button class="btn btn-primary mt-3 " data-bs-toggle="modal" data-bs-target="#add">
+        ADD POLICY
+      </button>
+        
+      }
     </div>
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-md-3 mb-4" *ngFor="let policy of policies">
-                <div class="fancy-hover card policy" (click)="openDetails(policy)" data-bs-toggle="modal"
-                    data-bs-target="#details">
-                    <div class="card-body text-center">
-                        <img src="{{policy.policyId}}.png" alt="LOGO" style="height: 80px; width:  80px;">
-                        <p class="card-text mt-4">{{ policy.policyName }}</p>
-                    </div>
-                </div>
-            </div>
+  </div>
+<!-- 
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-3 mb-4" *ngFor="let policy of policies">
+        <div class="fancy-hover card policy" (click)="openDetails(policy)" data-bs-toggle="modal"
+          data-bs-target="#details">
+          <div class="card-body text-center">
+            <img src="{{policy.policyId}}.png" alt="LOGO" onerror="this.onerror=null ;this.src='insurance.png'" style="height: 80px; width:  80px;">
+            <p class="card-text mt-4">{{ policy.policyName }}</p>
+          </div>
         </div>
+      </div>
     </div>
+  </div> -->
+
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-3 mb-4" *ngFor="let policy of policies">
+      <div class="fancy-hover card policy position-relative" (click)="openDetails(policy)" data-bs-toggle="modal" data-bs-target="#details">
+        
+        <div class="card-body text-center">
+          <img [src]="policy.policyId + '.png'" alt="LOGO" 
+               onerror="this.onerror=null; this.src='insurance.png'" 
+               style="height: 80px; width: 80px;">
+          <p class="card-text mt-4">{{ policy.policyName }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 </div>
 
 <div class="modal fade" id="details" tabindex="-1" aria-labelledby="detailsLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <i *ngIf="role === 'admin' " class="fas fa-trash text-danger position-absolute top-0 end-0 m-2" 
+      (click)="deletePolicy(selectedPolicy.policyId); $event.stopPropagation();" 
+      title="Delete Policy"
+      style="cursor: pointer;"></i>
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="detailsLabel">{{ selectedPolicy?.policyName }}</h5>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+      </div>
+      <div class="modal-body">
+        <p><strong>Premium:</strong> ₹{{ selectedPolicy?.premiumAmount }}</p>
+        <p><strong>Coverage:</strong> {{ selectedPolicy?.coverageDetails }}</p>
+        <p><strong>Valid Till:</strong> {{ selectedPolicy?.validityPeriod | date }}</p>
+      </div>
+      @if(role !== 'Customer') {
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update">Update</button>
+      }
+     
 
-            <div class="modal-header border-0">
-                <h5 class="modal-title" id="detailsLabel">{{ selectedPolicy?.policyName }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Premium:</strong> ₹{{ selectedPolicy?.premiumAmount }}</p>
-                <p><strong>Coverage:</strong> {{ selectedPolicy?.coverageDetails }}</p>
-                <p><strong>Valid Till:</strong> {{ selectedPolicy?.validityPeriod | date }}</p>
-            </div>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update">Update</button>
-        </div>
+      @else{
+      <button class="btn btn-primary" (click)="enroll(selectedPolicy.policyId,selectedPolicy.policyName)"
+        data-bs-dismiss="modal">Enroll</button>
+      }
+      
     </div>
+  </div>
 </div>
 
 <div *ngIf="selectedPolicy" class="modal fade" id="update" tabindex="-1" aria-labelledby="updateLabel"
@@ -55,7 +89,8 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Policy Name</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedPolicy.policyName" name="policyName" required min="1">
+            <input type="text" class="form-control" [(ngModel)]="selectedPolicy.policyName" name="policyName" required
+              min="1">
           </div>
           <div class="mb-3">
             <label class="form-label">Premium Amount</label>
@@ -64,18 +99,61 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Coverage Details</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedPolicy.coverageDetails"
-              name="coverageDetails" required >
+            <input type="text" class="form-control" [(ngModel)]="selectedPolicy.coverageDetails" name="coverageDetails"
+              required>
           </div>
           <div class="mb-3">
             <label class="form-label">validity Period</label>
-            <input type="date" class="form-control" [(ngModel)]="selectedPolicy.validityPeriod"
-              name="validityPeriod">
+            <input type="date" class="form-control" [(ngModel)]="selectedPolicy.validityPeriod" name="validityPeriod">
+          </div>
+        </div>
+        <div class="modal-footer">
+
+
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            Update
+          </button>
+
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for AddCustomer -->
+<div class="modal fade" id="add" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="add(policyForm.value)" #policyForm="ngForm">
+        <div class="modal-header bg-info text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Policy ID</label>
+            <input type="number" class="form-control" ngModel name="policyId" required minlength="3">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Policy Name</label>
+            <input type="text" class="form-control" ngModel name="policyName" required min="5">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Premium Amount</label>
+            <input type="number" class="form-control" ngModel name="premiumAmount" required min="0">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Coverage Details</label>
+            <textarea type="text" class="form-control" ngModel name="coverageDetails" required min="10"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Validity Period</label>
+            <input type="date" class="form-control" ngModel name="validityPeriod" required >
           </div>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
-            Update
+            Add
           </button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>

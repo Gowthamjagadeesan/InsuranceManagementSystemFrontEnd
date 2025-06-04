@@ -3,7 +3,7 @@ import { InsuranceComponent } from '../insurance/insurance.component';
 
 @Component({
   selector: 'home',
-  imports: [],
+  imports: [InsuranceComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

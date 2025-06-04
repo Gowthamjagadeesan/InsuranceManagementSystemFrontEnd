@@ -13,6 +13,7 @@ export class CLaimService {
   amount="http://localhost:9090/claim/reviewClaimByAmount/";
   validityperiod="http://localhost:9090/claim/reviewClaimByValidityPeriod/";
   update="http://localhost:9090/claim/updateClaim";
+  delete="http://localhost:9090/claim/deleteById/";
 
   createClaim(claim:Claim1){
     return this.client.post(this.create,claim,{responseType:'text'});
@@ -28,6 +29,10 @@ export class CLaimService {
   }
   updateCLaim(claim){
     return this.client.put<Claim>(this.update,claim);
+  }
+  deleteClaim(claimId: number) {
+    console.log(`Deleting claim with ID: ${claimId}`);
+    return this.client.delete(`${this.delete}${claimId}`, { responseType: 'text' });
   }
 }
 export class Claim{

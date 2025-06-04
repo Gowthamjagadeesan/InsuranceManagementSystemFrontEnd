@@ -1,12 +1,12 @@
 <div class="background">
-    <div class="container d-flex flex-column justify-content-center align-items-center" >
+    <div class="container d-flex flex-column justify-content-center align-items-center">
         <h1 class="pt-4 mt-4 display-6 fw-bold  text-center position-relative" style="top: 20px;">
             Welcome Agent,
         </h1>
         <p class="mt-2 pt-2 text-center position-relative " style="font-size:large;">
             choose required operation
         </p>
-    
+
         <div class="container">
               <div class="row justify-content-center g-4">
                     <!-- Repeat this card 4 times -->
@@ -21,19 +21,19 @@
                         </div>
                     </div>
                 </div>
-    
-                <div class="col-md-3" >
+
+                <div class="col-md-3">
                     <div class="card fancy-hover text-white image"
-                        style="height: 250px; background-image: url('claim.jpg');" (click)="openCust()" >
+                        style="height: 250px; background-image: url('claim.jpg');" (click)="openCust()">
                         <div class="card-body d-flex justify-content-center align-items-center" style="height: 180px;">
-                            <h5 class="hover-text text-center" >View and Perform operation on Customers credentials</h5>
+                            <h5 class="hover-text text-center">View and Perform operation on Customers credentials</h5>
                         </div>
                         <div class="card-footer text-center bg-info text-dark fw-bold">
                             Customers Operations
                         </div>
                     </div>
                 </div>
-    
+
                     <div class="col-md-3">
                     <div class="card fancy-hover text-white image"
                         style="height: 250px; background-image: url('claim.jpg');" (click)="openClaim()">
@@ -45,83 +45,26 @@
                         </div>
                     </div>
                 </div>
-    
+
+                @if(role === 'admin') {
                 <div class="col-md-3">
                     <div class="card fancy-hover text-white image"
                         style="height: 250px; background-image: url('claim.jpg');">
-                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 180px;">
-                            <h5 class="hover-text text-center">Update the status of the Claims and validate</h5>
+                        <div class="card-body d-flex justify-content-center align-items-center" (click)="openAgent()"
+                            style="height: 180px;">
+                            <h5 class="hover-text text-center">DO AGENT OPERATIONS</h5>
                         </div>
                         <div class="card-footer text-center bg-info text-dark fw-bold">
-                            Approve Claims
+                            AGENT
                         </div>
                     </div>
                 </div>
-    
-                  <div class="col-md-3">
-                    <div class="card fancy-hover text-white image"
-                        style="height: 250px; background-image: url('viewClaim.jpg');">
-                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 180px;">
-                            <h5 class="hover-text text-center">Assign Policies To Customers</h5>
-                        </div>
-                        <div class="card-footer text-center bg-info text-dark fw-bold">
-                            Assign Policies
-                        </div>
-                    </div>
-                </div>
+                }
 
-                  <div class="col-md-3">
-                    <div class="card fancy-hover text-white image"
-                        style="height: 250px; background-image: url('viewClaim.jpg');">
-                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 180px;">
-                            <h5 class="hover-text text-center">View All Claims of All Customers </h5>
-                        </div>
-                        <div class="card-footer text-center bg-info text-dark fw-bold">
-                            All Claims
-                        </div>
-                    </div>
-                </div>
-
-                  <div class="col-md-3">
-                    <div class="card fancy-hover text-white image"
-                        style="height: 250px; background-image: url('viewClaim.jpg');">
-                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 180px;">
-                            <h5 class="hover-text text-center">Update the Policy </h5>
-                        </div>
-                        <div class="card-footer text-center bg-info text-dark fw-bold">
-                            Update Policy
-                        </div>
-                    </div>
-                </div>
-               
-                  <div class="col-md-3">
-                    <div class="card fancy-hover text-white image"
-                        style="height: 250px; background-image: url('viewClaim.jpg');">
-                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 180px;">
-                            <h5 class="hover-text text-center">Create a new Claim FOr Customer</h5>
-                        </div>
-                        <div class="card-footer text-center bg-info text-dark fw-bold">
-                            Create Claim
-                        </div>
-                    </div>
-                </div>
-                  <div class="col-md-3">
-                    <div class="card fancy-hover text-white image"
-                        style="height: 250px; background-image: url('viewClaim.jpg');">
-                        <div class="card-body d-flex justify-content-center align-items-center" style="height: 180px;">
-                            <h5 class="hover-text text-center">Review Customer's Claims</h5>
-                        </div>
-                        <div class="card-footer text-center bg-info text-dark fw-bold">
-                            Review Claim
-                        </div>
-                    </div>
-                </div>
-               
-               
-    
-                  </div>
+                 
+            </div>
         </div>
-    
+
     </div>
 </div>
 <router-outlet></router-outlet>

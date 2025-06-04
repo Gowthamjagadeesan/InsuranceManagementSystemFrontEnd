@@ -36,7 +36,7 @@ export class ListcustomerService {
     console.log(custId);
     return this.client.delete(this.path2+custId);
   }
-  getPolicy(custId:number){
+  getPolicy(custId){
     console.log(custId)
     return this.client.get<Policy[]>(this.path1+custId)
   }

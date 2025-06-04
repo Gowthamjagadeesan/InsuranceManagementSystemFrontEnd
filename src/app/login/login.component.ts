@@ -5,6 +5,8 @@ import { HeaderComponent } from '../header/header.component';
 import { CommonService } from '../common.service';
 import { LoginserviceService } from '../loginservice.service';
 import { jwtDecode } from 'jwt-decode';
+import { ListcustomerService } from '../listcustomer.service';
+import { PolicyService } from '../policy.service';
 
 
 @Component({
@@ -18,7 +20,7 @@ import { jwtDecode } from 'jwt-decode';
 
 
 export class LoginComponent {
-  constructor(private router: Router, private commonService: CommonService, private logService: LoginserviceService, private access: ActivatedRoute) {
+  constructor(private router: Router, private commonService: CommonService, private logService: LoginserviceService, private access: ActivatedRoute, private policyService: PolicyService) {
 
   }
 
@@ -47,15 +49,33 @@ export class LoginComponent {
         const decoded = jwtDecode<JwtPayload>(token);
         const role: string = decoded.roles ?? 'No role found';
         console.log(role);
-        sessionStorage.setItem("role",role);
-        if(role === 'customer'){
+        sessionStorage.setItem("role", role);
+        console.log(form.value.username);
+        sessionStorage.setItem("username", form.value.username);
+        if (role === 'Customer') {
+          this.policyService.getCustomerByName(form.value.username).subscribe({
+            next: (response) => {
+              console.log("Customer response:", response);
+
+              console.log("Customer ID:", response.customerId);
+              sessionStorage.setItem("custId", response.customerId.toString());
+
+            }
+          })
           this.router.navigate(["/cust-home"]);
         }
-        else{
+        else {
+          this.logService.getAgentByName().subscribe({
+            next:(response)=>{
+              console.log("Agent response:", response);
+              console.log("Agent ID:", response.agentId);
+              sessionStorage.setItem("agentId", response.agentId.toString());
+            }
+          })
           this.router.navigate(["/agent-home"]);
         }
-        
-        
+
+
 
       },
       error: (err) => {

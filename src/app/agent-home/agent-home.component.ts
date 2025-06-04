@@ -12,6 +12,7 @@ export class AgentHomeComponent {
 
    
   }
+  role = sessionStorage.getItem("role");
   openCust(){
     this.route.navigate(["/cust-op"])
   }
@@ -21,4 +22,8 @@ export class AgentHomeComponent {
   openClaim(){
     this.route.navigate(['/claim'])
   }
+  openAgent(){
+    this.route.navigate(['/agent'])
+  }
+ 
 }

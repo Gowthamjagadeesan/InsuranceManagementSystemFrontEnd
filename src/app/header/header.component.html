@@ -28,7 +28,7 @@
         <!-- Brand -->
         <a class="navbar-brand text-dark" href="#">
             <!-- <i class="bi bi-people-fill"></i> INSURANCE -->
-            <img style="height: 35px;" src="logo.png" alt="Insurance Logo">
+            <img style="width: 180px" src="logo.png" alt="Insurance Logo">
         </a>
         <!-- Toggler for Mobile -->
         <button class="navbar-toggler text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -37,22 +37,41 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-
-            <ul *ngIf="isLogedIn && role !== 'customer' " class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-dark"   routerLink="/agent-home" href="#">HOME</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark"   routerLink="/policy-op" href="#">POLICIES</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark"   routerLink="/cust-op" href="#">CUSTOMER</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark"   routerLink="/agent-home" href="#">CLAIM</a>
-                </li>
-            </ul>
-
+            @if(role !== 'Customer' && isLogedIn){
+                <ul  class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"   routerLink="/agent-home" href="#">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"   routerLink="/policy-op" href="#">POLICIES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"   routerLink="/cust-op" href="#">CUSTOMER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"   routerLink="/claim" href="#">CLAIM</a>
+                    </li>
+                </ul>
+    
+            }
+            @else if(role === 'Customer' && isLogedIn){
+                <ul  class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"   routerLink="/cust-home" href="#">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"   routerLink="/policy-op" href="#">POLICIES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"   routerLink="/myclaim" href="#">CLAIM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"   routerLink="/about-us" href="#">ABOUT US</a>
+                    </li>
+                </ul>
+    
+            }
+           
             <ul *ngIf="isLogedIn && role === 'customer' " class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link text-dark"   routerLink="/agent-home" href="#">HOME</a>

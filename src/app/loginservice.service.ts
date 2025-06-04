@@ -12,6 +12,7 @@ import { throwError } from 'rxjs';
 export class LoginserviceService {
   user: LoginUser
   path = "http://localhost:9090/auth/authenticate"
+  getAgentName = "http://localhost:9090/agent/searchByName/"
   constructor(private client: HttpClient, private router: Router) {
 
    }
@@ -33,7 +34,7 @@ export class LoginserviceService {
   //   }
 
   // }
-
+  
   login(user: LoginUser) {
     console.log("In service");
     console.log(user);
@@ -44,6 +45,10 @@ export class LoginserviceService {
     )
 
     
+  }
+  getAgentByName(){
+   const name= sessionStorage.getItem("username");
+   return this.client.get<Agent>(this.getAgentName+name)
   }
   getJWT():string
   {
@@ -64,6 +69,7 @@ export class LoginserviceService {
     alert("logout successful")
     this.router.navigate(["/login"])
     localStorage.clear()
+    sessionStorage.clear();
     this.isLogedIn = false;
     return this.isLogedIn
   }
@@ -72,4 +78,14 @@ export class LoginserviceService {
 export class LoginUser {
   name: string;
   password: string
+}
+export class Agent {
+  agentId:number;
+  name: string;
+  email: string;
+  policy:Policy[];
+}
+export class Policy {
+  policyId: number;
+  assignedPolicies:string
 }

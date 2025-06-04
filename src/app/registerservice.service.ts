@@ -14,7 +14,7 @@ export class RegisterserviceService {
 
   path1 = "http://localhost:9090/auth/new";
   path2 = "http://localhost:9090/customer/create";
-  path3="http://localhost:1117/agent/save";
+  path3="http://localhost:9090/agent/save";
 
   // Register only the user
   registerUser(form: RegisterUser): Observable<any> {

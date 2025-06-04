@@ -1,0 +1,21 @@
+.card.policy {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+
+.card.policy:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+    /* Sky blue shadow */
+    background-color: #e0f7fa;
+    /* Light teal background */
+}
+
+.message{
+    background-image: url('/custHomeBg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+}
