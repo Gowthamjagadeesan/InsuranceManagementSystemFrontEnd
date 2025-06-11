@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,31 @@ export class AgentService {
   delete="http://localhost:9090/agent/delete/";
   deleteUser="http://localhost:9090/auth/delete/";
   assignAgent="http://localhost:9090/policy/assignPoliciesToAgent/"
+
+   registerUser(user: User): Observable<any> {
+      console.log("Registering user:", user);
+      return this.client.post(this.savesec, user, { responseType: 'text' });
+    }
+  
+      registerAgent(agent: Agent): Observable<any> {
+        console.log("Registering customer:", agent);
+        return this.client.post(this.save, agent, { responseType: 'text' });
+      }
+      registerBoth2(user: User & Agent): Observable<any> {
+        
+          user.policies=[]
+          
+          console.log("Registering both user and Agent:", user);
+          return this.registerUser(user).pipe(
+            switchMap(() => this.registerAgent(user)),
+            catchError((error) => {
+              console.error("Registration failed:", error);
+              return throwError(() => error);
+            })
+          );
+        }
+      
+    
 
   getAllAgents() {
     return this.client.get<Agent[]>(this.getAll);

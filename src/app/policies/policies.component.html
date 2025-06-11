@@ -27,7 +27,7 @@
   </div> -->
 
 <div class="container mt-3">
-  <div class="row">
+  <div class="row" *ngIf="policies && policies.length > 0; else noPolicies">
     <div class="col-md-3 mb-4" *ngFor="let policy of policies">
       <div class="fancy-hover card policy position-relative" (click)="openDetails(policy)" data-bs-toggle="modal" data-bs-target="#details">
         
@@ -41,6 +41,18 @@
     </div>
   </div>
 </div>
+<ng-template #noPolicies>
+  <div class="alert alert-info text-center mt-4">
+    <strong>No Policies have been created yet Be patient and discover more .</strong>
+    <!-- <div class="mt-3">
+      <button class="btn btn-primary" (click)="goToPolicies()">
+        <i class="bi bi-arrow-left"></i>
+        Go to My Policies
+      </button>
+    </div> -->
+  </div>
+</ng-template>
+
 
 </div>
 
@@ -90,27 +102,43 @@
           <div class="mb-3">
             <label class="form-label">Policy Name</label>
             <input type="text" class="form-control" [(ngModel)]="selectedPolicy.policyName" name="policyName" required
-              min="1">
+              min="5" #policyNameRef="ngModel">
+              <div *ngIf="policyNameRef.invalid && policyNameRef.touched"
+                class="alert alert-danger alert-custom mt-2 mx-auto">
+                Valid name is required
+              </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Premium Amount</label>
             <input type="number" class="form-control" [(ngModel)]="selectedPolicy.premiumAmount" name="premiumAmount"
-              required min="0">
+              required #premiumAmountRef="ngModel">
+            <div *ngIf="premiumAmountRef.invalid && premiumAmountRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid amount is required
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Coverage Details</label>
             <input type="text" class="form-control" [(ngModel)]="selectedPolicy.coverageDetails" name="coverageDetails"
-              required>
+              required min="10" #coverageDetailsRef="ngModel">
+            <div *ngIf="coverageDetailsRef.invalid && coverageDetailsRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid coverage details are required   
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">validity Period</label>
-            <input type="date" class="form-control" [(ngModel)]="selectedPolicy.validityPeriod" name="validityPeriod">
+            <input type="date" class="form-control"  [min]="today" [(ngModel)]="selectedPolicy.validityPeriod" name="validityPeriod" required #validityPeriodRef="ngModel">
+            <div *ngIf="validityPeriodRef.invalid && validityPeriodRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid date is required  
+            </div>
           </div>
         </div>
         <div class="modal-footer">
 
 
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="policyForm.invalid">
             Update
           </button>
 
@@ -132,15 +160,27 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Policy ID</label>
-            <input type="number" class="form-control" ngModel name="policyId" required minlength="3">
+            <input type="number" class="form-control" ngModel name="policyId" required minlength="3" #policyIdRef="ngModel">
+            <div *ngIf="policyIdRef.invalid && policyIdRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid ID is required
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Policy Name</label>
-            <input type="text" class="form-control" ngModel name="policyName" required min="5">
+            <input type="text" class="form-control" ngModel name="policyName" required min="5" #policyNameRef="ngModel">
+            <div *ngIf="policyNameRef.invalid && policyNameRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid name is required
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Premium Amount</label>
-            <input type="number" class="form-control" ngModel name="premiumAmount" required min="0">
+            <input type="number" class="form-control" ngModel name="premiumAmount" required min="15000" #premiumAmountRef="ngModel">
+            <div *ngIf="premiumAmountRef.invalid && premiumAmountRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid amount is required
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Coverage Details</label>
@@ -148,11 +188,15 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Validity Period</label>
-            <input type="date" class="form-control" ngModel name="validityPeriod" required >
+            <input type="date" class="form-control" ngModel name="validityPeriod" required [min]="today" #validityPeriodRef="ngModel">
+            <div *ngIf="validityPeriodRef.invalid && validityPeriodRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid date is required
+            </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="policyForm.invalid">
             Add
           </button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

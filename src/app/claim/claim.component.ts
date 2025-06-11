@@ -37,7 +37,7 @@ export class CLaimComponent {
       next:(response) => {
         
         console.log(response);
-        // window.location.reload();
+        window.location.reload();
       }
     })
    }
@@ -90,12 +90,13 @@ export class CLaimComponent {
 
 
   reviewByAmt(claimId: number) {
+    console.log(claimId)
     this.claimService.reviewByAmount(claimId).subscribe({
       next: (response) => {
         console.log(response);
       }
     })
-    window.location.reload();
+   // window.location.reload();
   }
   reviewByPeriod(claimId: number) {
     console.log(claimId)
@@ -104,7 +105,7 @@ export class CLaimComponent {
         console.log(response);
       }
     })
-    window.location.reload();
+  //  window.location.reload();
   }
 }
 export class Claim {

@@ -86,25 +86,55 @@ export class AgentComponent {
     
       }
 
-      add(agentForm: NgForm) {
+      // add(agentForm: NgForm) {
 
-        const agentData = agentForm.value; // This is of type Customer1
-        console.log(agentData);
+      //   const agentData = agentForm.value; // This is of type Customer1
+      //   console.log(agentData);
+      //   agentData.policies = [];
+      //   this.agentService.saveAgent(agentData).subscribe(
+      //     {
+      //       next: (response => console.log(response))
+      //     }
+      //   )
+      //   this.agentService.saveuser(agentData.name,agentData.email).subscribe({
+      //     next: (response )=>{
+      //       console.log(agentData.name)
+      //       console.log(agentData.email)
+      //       console.log(response)
+            
+      //     }        
+      //    })
+      //   // this.reload();
+      //  window.location.reload();
+      // }
+
+      add(agentForm: NgForm) {
+        const agentData = agentForm.value;
         agentData.policies = [];
-        this.agentService.saveAgent(agentData).subscribe(
-          {
-            next: (response => console.log(response))
-          }
-        )
-        this.agentService.saveuser(agentData.name,agentData.email).subscribe({
-          next: (response => console.log(response))
-        })
-         window.location.reload();
+      
+        this.agentService.saveAgent(agentData).subscribe({
+          next: (agentResponse) => {
+            console.log('Agent saved:', agentResponse);
+      
+            this.agentService.saveuser(agentData.name, agentData.email).subscribe({
+              next: (userResponse) => {
+                console.log('User saved:', userResponse);
+                window.location.reload(); // Reload after both calls
+              },
+              error: (err) => console.error('User save error:', err)
+            });
+          },
+          error: (err) => console.error('Agent save error:', err)
+        });
+      }
+      
+      reload(){
+        window.location.reload();
       }
       edit(agent: Agent) {
           this.selectedAgent = { ...agent };
         }
-  update(agent: Agent) {
+      update(agent: Agent) {
       if (this.selectedAgent) {
         console.log(this.selectedAgent.agentId)
         agent.agentId = this.selectedAgent.agentId

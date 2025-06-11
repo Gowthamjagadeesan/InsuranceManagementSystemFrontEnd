@@ -12,6 +12,7 @@ export class PolicyService {
   // getcustByName="http://localhost:9090/customer/searchByName/";
   add="http://localhost:9090/policy/save";
   delete="http://localhost:9090/policy/deletePolicy/";
+  removePol="http://localhost:9090/customer/remove-policy/";
   constructor(private client:HttpClient) { 
 
   }
@@ -20,6 +21,9 @@ export class PolicyService {
   }
   addPolicy(policy:Policy){
     return this.client.post(this.add,policy,{responseType:'text'});
+  }
+  removePolicyFromCustomer(polId:any){
+    return this.client.delete(`${this.removePol}${polId}`, { responseType: 'text' });
   }
 
   updatePol(policy){

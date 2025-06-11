@@ -5,6 +5,7 @@ import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PolicyService } from '../policy.service';
 import { CLaimService } from '../claim.service';
+import { AgentService } from '../agent.service';
 
 @Component({
   selector: 'customer',
@@ -26,7 +27,7 @@ export class CustomerComponent implements OnInit {
   itemsPerPage: number = 5;
   claimStatus = "FILLED";
 
-  constructor(private listCust: ListcustomerService, private polService: PolicyService, private claimService: CLaimService) {
+  constructor(private listCust: ListcustomerService, private agentService:AgentService,private polService: PolicyService, private claimService: CLaimService) {
     listCust.getALlCustomer().subscribe(response => console.log(response));
     listCust.getALlCustomer().subscribe(response => this.customers = response);
     polService.getAll().subscribe(
@@ -49,6 +50,15 @@ export class CustomerComponent implements OnInit {
 
   }
 
+  remove(id:any){
+    this.polService.removePolicyFromCustomer(id).subscribe({
+      next:(response)=>{
+        console.log(response);
+        alert("Policy removed from customer successfully");
+       // window.location.reload();
+      }
+    })
+  }
   assign(custAssign) {
     console.log(custAssign)
     console.log(this.selectedCustomer.customerId)
@@ -97,8 +107,15 @@ export class CustomerComponent implements OnInit {
     )
   }
   create(claim: Claim) {
-    console.log(claim);
+
+    console.log("Inside claim",claim);
     claim.claimStatus="FILLED"
+    claim.customerId = this.selectedCustomer.customerId;
+    console.log(this.selectedCustomer.customerId);
+    claim.agentId = this.agent.agentId;
+    claim.policyId = this.selectedPol.policyId;
+    console.log(this.agent.agentId);
+    console.log(claim);
     this.claimService.createClaim(claim).subscribe({
       next: (response) =>{
         console.log(response)
@@ -115,6 +132,7 @@ export class CustomerComponent implements OnInit {
           next: (response => console.log(response))
         }
       )
+      window.location.reload();
     }
   }
   add(custForm: NgForm) {
@@ -124,10 +142,21 @@ export class CustomerComponent implements OnInit {
 
     this.listCust.saveCust(customerData).subscribe(
       {
-        next: (response => console.log(response))
-      }
-    )
-    window.location.reload();
+        next: (response) => {
+          console.log(response);
+
+          this.listCust.saveuser(customerData.name, customerData.email).subscribe({
+            next: (userResponse) => {
+              console.log('User saved:', userResponse);
+              window.location.reload(); // Reload after both calls
+            },
+            error: (err) => console.error('User save error:', err)
+          });
+        },
+        error: (err) => console.error('Agent save error:', err)
+        } 
+    );
+   // window.location.reload();
   }
   delete(customer: Customer) {
 
@@ -143,6 +172,14 @@ export class CustomerComponent implements OnInit {
           }
         }
       )
+      console.log(customer.name)
+        this.agentService.deleteUserByRole(customer.name, "Customer").subscribe(
+          {
+            next: (response) => {
+              console.log(response)
+          }
+        }
+        )
       window.location.reload();
 
       alert("Deleted successfully")

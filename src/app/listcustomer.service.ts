@@ -12,10 +12,22 @@ export class ListcustomerService {
   save="http://localhost:9090/customer/create";
   update="http://localhost:9090/customer/update";
   getAgent="http://localhost:9090/agent/getAgentByPolicy/";
+  savesec="http://localhost:9090/auth/new";
+
   form:Customer[];
   constructor(private client : HttpClient) { 
    
   }
+  user:User;
+  saveuser(name,email) {
+      this.user = new User();
+      this.user.name = name;
+      this.user.email =email;
+      this.user.password = "1234";
+      this.user.roles = "Customer";
+      console.log(this.user);
+      return this.client.post(this.savesec, this.user,{responseType: 'text'});
+    }
   updateCust(custForm:Customer) {
     return this.client.put(this.update,custForm);
   }
@@ -82,4 +94,10 @@ export class Agent {
 export class Policy{
   policyId: number;
   policyType:string;
+}
+export class User {
+  name: string;
+  email:string;
+  password: string;
+  roles: string;
 }

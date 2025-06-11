@@ -11,10 +11,15 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './policies.component.css'
 })
 export class PoliciesComponent {
+  today: string;
   custId: number;
   policies: Policy[]
   selectedPolicy: any;
   constructor(private polService: PolicyService, private router: Router) {
+
+    const now = new Date();
+    this.today = now.toISOString().split('T')[0];
+
     console.log(this.role);
     polService.getAll().subscribe(
       {
@@ -54,20 +59,23 @@ export class PoliciesComponent {
     )
 
   }
-  add(policy:Policy){
+  add(policy: Policy) {
     this.polService.addPolicy(policy).subscribe({
-      next:(response) =>{
+      next: (response) => {
         console.log(response);
-        window.location.reload();
+
       }
     })
+    window.location.reload();
   }
-  deletePolicy(policyId){
+  deletePolicy(policyId) {
     this.polService.deletePolicy(policyId).subscribe({
       next: (response) => {
         console.log("Policy deleted successfully:", response);
-        window.location.reload();
-      }});
+       
+      }
+    });
+    window.location.reload();
   }
   enroll(policyId, polName) {
 

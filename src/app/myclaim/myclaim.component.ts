@@ -3,6 +3,8 @@ import { MyclaimService } from '../myclaim.service';
 import { CommonModule } from '@angular/common';
 import { CLaimService } from '../claim.service';
 import { FormsModule } from '@angular/forms';
+import { routes } from '../app.routes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-myclaim',
@@ -13,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 export class MyclaimComponent {
    selectedClaim :Claim | null = null;
   claims:Claim[]=[];
-    constructor(private myClaimService: MyclaimService,private claimService: CLaimService) {
+    constructor(private myClaimService: MyclaimService,private claimService: CLaimService,private router:Router) {
         myClaimService.getClaimByCustId().subscribe({
           next:(response) =>{
             this.claims = response;
@@ -30,6 +32,10 @@ export class MyclaimComponent {
           console.log(response);
         }
       })
+    }
+    goToPolicies(){
+      console.log('Navigating to policies');
+      this.router.navigate(['/mypolicy']);
     }
     delete(claimId: number) {
       console.log('Deleting claim with ID:', claimId);

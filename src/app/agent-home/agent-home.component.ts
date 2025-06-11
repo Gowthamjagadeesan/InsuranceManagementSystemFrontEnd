@@ -1,9 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'agent-home',
-  imports: [RouterLink,RouterOutlet],
+  imports: [RouterLink,RouterOutlet,CommonModule],
   templateUrl: './agent-home.component.html',
   styleUrl: './agent-home.component.css'
 })
@@ -13,6 +14,7 @@ export class AgentHomeComponent {
    
   }
   role = sessionStorage.getItem("role");
+  username = sessionStorage.getItem("username");
   openCust(){
     this.route.navigate(["/cust-op"])
   }

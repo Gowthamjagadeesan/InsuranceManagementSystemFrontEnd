@@ -107,15 +107,23 @@
           <div class="modal-body">
             <div class="mb-3">
               <label class="form-label">Agent Name</label>
-              <input type="text" class="form-control" ngModel name="name" required minlength="3">
+              <input type="text" class="form-control" ngModel name="name" required minlength="3" #agentNameRef="ngModel">
+              <div *ngIf="agentNameRef.invalid && agentNameRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid name is required
+            </div>
             </div>
             <div class="mb-3">
               <label class="form-label">Agent Email:</label>
-              <input type="text" class="form-control" ngModel name="email" required min="1">
+              <input type="text" class="form-control" ngModel name="email"   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" required min="1" #agentEmailRef="ngModel">
+              <div *ngIf="agentEmailRef.invalid && agentEmailRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid mail is required
+            </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+            <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="agentForm.invalid">
               Add
             </button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -136,16 +144,24 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Agent Name</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedAgent.name" name="name" required
+            <input type="text" class="form-control" [(ngModel)]="selectedAgent.name" #agentNameRef="ngModel" name="name" required
               minlength="3">
+              <div *ngIf="agentNameRef.invalid && agentNameRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto">
+              Valid name is required
+            </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Agent Email:</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedAgent.email" name="email" required min="1">
+            <input type="text" class="form-control" [(ngModel)]="selectedAgent.email" name="email" #agentEmailRef="ngModel" required min="1">
+            <div *ngIf="agentEmailRef.invalid && agentEmailRef.touched"
+            class="alert alert-danger alert-custom mt-2 mx-auto">
+            Valid mail is required
+          </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+          <button type="submit" class="btn btn-success" [disabled]="agentForm.invalid" data-bs-dismiss="modal">
             Update
           </button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

@@ -13,6 +13,8 @@ import { authGuard } from './auth.guard';
 import { MypolicyComponent } from './mypolicy/mypolicy.component';
 import { MyclaimComponent } from './myclaim/myclaim.component';
 import { AgentComponent } from './agent/agent.component';
+import { NotificationComponent } from './notification/notification.component';
+import { auth2Guard } from './auth2.guard';
 
 export const routes: Routes = [
     { path: "login", component: LoginComponent },
@@ -20,14 +22,15 @@ export const routes: Routes = [
     { path: "register", component: RegisterComponent },
     { path: "about-us", component: AboutUsComponent },
     { path: "insurance", component: InsuranceComponent },
-    { path: "cust-home", component: CustomerHomeComponent },
+    { path: "cust-home", component: CustomerHomeComponent,canActivate:[auth2Guard] },
     { path: "agent-home", component: AgentHomeComponent ,canActivate:[authGuard] },
     { path: 'login/:role', component: LoginComponent },
     { path: "cust-op", component: CustomerComponent,canActivate:[authGuard] },
-    { path: "policy-op", component: PoliciesComponent },
+    { path: "policy-op", component: PoliciesComponent,canActivate:[auth2Guard] },
     { path: "claim", component: CLaimComponent, canActivate:[authGuard] },
-    { path: "mypolicy", component: MypolicyComponent },
+    { path: "mypolicy", component: MypolicyComponent ,canActivate:[auth2Guard]},
     { path: "agent", component: AgentComponent, canActivate:[authGuard] },
-    { path: "myclaim", component: MyclaimComponent },
+    { path: "myclaim", component: MyclaimComponent,canActivate:[auth2Guard] },
+    { path: "notification", component: NotificationComponent,canActivate:[auth2Guard] },
     { path: "", component: HomeComponent }
 ];

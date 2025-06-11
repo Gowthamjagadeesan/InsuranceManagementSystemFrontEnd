@@ -6,12 +6,13 @@
     <div class="d-flex align-items-center mt-4">
 
       <search class="w-50 ms-2 d-flex  ">
-        
-        <input type="text" class="form-control   " style="background-color: rgb(237, 250, 252); color: black;" placeholder="Search by name" [(ngModel)]="searchTerm"
-        (input)="filterCustomers()" />
+
+        <input type="text" class="form-control   " style="background-color: rgb(237, 250, 252); color: black;"
+          placeholder="Search by name" [(ngModel)]="searchTerm" (input)="filterCustomers()" />
         <i class="fa-solid fa-magnifying-glass mt-2 mx-2 text-dark fa-1x"></i>
 
-      </search>      <button type="button" class="btn btn-outline btn-success ms-auto" data-bs-toggle="modal" data-bs-target="#add">
+      </search> <button type="button" class="btn btn-outline btn-success ms-auto" data-bs-toggle="modal"
+        data-bs-target="#add">
         Add More Customers
       </button>
     </div>
@@ -22,7 +23,7 @@
       <thead>
         <tr>
           <th>NAME</th>
-          <th >EMAIL</th>
+          <th>EMAIL</th>
           <th>PHONE</th>
           <th>ADDRESS</th>
           <th>POLICIES</th>
@@ -51,7 +52,7 @@
           </td>
           <td class="text-dark text-center">
             <button class="btn btn-outline btn-success" data-bs-toggle="modal" data-bs-target="#assign"
-            (click)="edit(customer)">ASSIGN</button>
+              (click)="edit(customer)">ASSIGN</button>
           </td>
         </tr>
       </tbody>
@@ -77,7 +78,7 @@
 
 
 <!-- Modal for Policy -->
-<div class="modal fade" id="policy" tabindex="-1" aria-labelledby="policyLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="policy" tabindex="-1" aria-labelledby="policyLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content shadow">
 
@@ -86,6 +87,7 @@
           <th class="text-center">Policy Id</th>
           <th class="text-center">Policy Name</th>
           <th class="text-center">Create Claim</th>
+          <th class="text-center">Remove</th>
 
         </thead>
         <tbody>
@@ -93,15 +95,63 @@
           <tr>
             <td class="text-dark text-center">{{policy.policyId}}</td>
             <td class="text-dark text-center">{{policy.policyType}}</td>
-            <td class="text-center"><button class="btn btn-outline btn-success " data-bs-toggle="modal" data-bs-target="#createClaim"
-              (click)="createClaim(policy)">Create Claim</button></td>
+            <td class="text-center"><button class="btn btn-outline btn-success " data-bs-toggle="modal"
+                data-bs-target="#createClaim" (click)="createClaim(policy)">Create Claim</button></td>
+            <td class="text-center"> <button class="btn btn-outline-danger ms-2" (click)="remove(policy.policyId)">
+                <i class="fa-solid fa-user-xmark"></i>
+              </button></td>
           </tr>
           }
         </tbody>
       </table>
     </div>
   </div>
+</div> -->
+
+<div *ngIf="policies" class="modal fade" id="policy" tabindex="-1" aria-labelledby="policyLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+
+      <!-- If no policies -->
+      <div *ngIf="policies.length === 0" class="text-center text-muted p-4">
+        <p class="mb-0">Customer is not enrolled with any policy.</p>
+      </div>
+
+      <!-- If policies exist -->
+      <table *ngIf="policies.length > 0" class="pt-4 mt-4 table table-info table-hover">
+        <thead>
+          <tr>
+            <th class="text-center">Policy Id</th>
+            <th class="text-center">Policy Name</th>
+            <th class="text-center">Create Claim</th>
+            <th class="text-center">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(policy of policies;track policy.policyId){
+            <tr >
+              <td class="text-dark text-center">{{ policy.policyId }}</td>
+              <td class="text-dark text-center">{{ policy.policyType }}</td>
+              <td class="text-center">
+                <button class="btn btn-outline btn-success" data-bs-toggle="modal"
+                  data-bs-target="#createClaim" (click)="createClaim(policy)">Create Claim</button>
+              </td>
+              <td class="text-center">
+                <button class="btn btn-outline-danger ms-2" (click)="remove(policy.policyId)">
+                  <i class="fa-solid fa-user-xmark"></i>
+                </button>
+              </td>
+            </tr>
+          }
+          
+        </tbody>
+      </table>
+
+    </div>
+  </div>
 </div>
+
+
 <!-- Modal for AddCustomer -->
 <div class="modal fade" id="add" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -113,23 +163,40 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Customer Name</label>
-            <input type="text" class="form-control" ngModel name="name" required minlength="3">
+            <input type="text" class="form-control" ngModel name="name" required minlength="3" #nameRef="ngModel">
+            <div *ngIf="nameRef.invalid && nameRef.touched"
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Valid name is required
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Customer Email:</label>
-            <input type="text" class="form-control" ngModel name="email" required min="1">
+            <input type="text" class="form-control" ngModel name="email" required required
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #mailRef="ngModel">
+              <div  *ngIf="mailRef.invalid && mailRef.touched" 
+              class="alert alert-danger alert-custom mt-2 mx-auto" >
+               Valid email is required
+               </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Customer Phone</label>
-            <input type="number" class="form-control" ngModel name="customerPhone" required min="0">
+            <input type="number" class="form-control" ngModel name="customerPhone" pattern="^[6-9]\d{9}$" required #phoneRef="ngModel">
+            <div *ngIf="phoneRef.invalid && phoneRef.touched"
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Valid phone number is required
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Customer Address</label>
-            <input type="text" class="form-control" ngModel name="customerAddress" required min="0">
+            <input type="text" class="form-control" ngModel name="customerAddress" required min="4" #addressRef="ngModel">
+            <div *ngIf="addressRef.invalid && addressRef.touched"
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Valid address is required 
+             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="custForm.invalid">
             Add
           </button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -151,26 +218,42 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Customer Name</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.name" name="name" required
-              minlength="3">
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.name" name="name" required minlength="3" #nameRef="ngModel">
+            <div *ngIf="nameRef.invalid && nameRef.touched"
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Valid name is required
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Customer Email:</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.email" name="email" required min="1">
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.email" name="email" required required
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #mailRef="ngModel">
+            <div  *ngIf="mailRef.invalid && mailRef.touched" 
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Valid email is required
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Customer Phone</label>
             <input type="number" class="form-control" [(ngModel)]="selectedCustomer.customerPhone" name="customerPhone"
-              required min="0">
+            pattern="^[6-9]\d{9}$" required #phoneRef="ngModel">
+            <div *ngIf="phoneRef.invalid && phoneRef.touched"
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Valid phone number is required
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Customer Address</label>
             <input type="text" class="form-control" [(ngModel)]="selectedCustomer.customerAddress"
-              name="customerAddress" required min="0">
+              name="customerAddress" required min="4" #addressRef="ngModel">
+              <div *ngIf="addressRef.invalid && addressRef.touched"
+              class="alert alert-danger alert-custom mt-2 mx-auto" >
+               Valid address is required 
+               </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="custForm.invalid">
             Update
           </button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -184,34 +267,38 @@
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content shadow">
-     
-        <div class="modal-header bg-info text-white">
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <table class="pt-4 mt-4 table table-info  table-hover">
-              <th class="text-center">Policy Id</th>
-              <th class="text-center">Policy Name</th>
-              <th class="text-center">Assign</th>
-           
+
+      <div class="modal-header bg-info text-white">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <table class="pt-4 mt-4 table table-info  table-hover">
+            <th class="text-center">Policy Id</th>
+            <th class="text-center">Policy Name</th>
+            <th class="text-center">Assign</th>
+
             @for(policy of policies1;track policy.policyId){
-              <tr>
-                <td class="text-dark text-center">{{policy.policyId}}</td>
-                <td class="text-dark text-center">{{policy.policyName}}</td>
-                  <td class="text-dark text-center">
-                    <button class="btn btn-outline btn-success" (click)="editPol(policy)" data-bs-dismiss="modal">Assign</button>
-                  </td>
-              </tr>
+            <tr>
+              <td class="text-dark text-center">{{policy.policyId}}</td>
+              <td class="text-dark text-center">{{policy.policyName}}</td>
+              <td class="text-dark text-center">
+                <button class="btn btn-outline btn-success" (click)="editPol(policy)"
+                  data-bs-dismiss="modal">Assign</button>
+              </td>
+            </tr>
             }
           </table>
-          </div>
         </div>
+      </div>
     </div>
   </div>
 </div>
+
+
 <!-- Create Claim -->
-<div *ngIf="selectedCustomer" class="modal fade" id="createClaim" tabindex="-1" aria-labelledby="createClaimLabel" aria-hidden="true">
+<div *ngIf="selectedCustomer" class="modal fade" id="createClaim" tabindex="-1" aria-labelledby="createClaimLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content shadow">
       <form (ngSubmit)="create(claimForm.value)" #claimForm="ngForm">
@@ -221,31 +308,39 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Customer Id</label>
-            <input type="number" class="form-control" [(ngModel)]="selectedCustomer.customerId"  name="customerId">
+            <input type="number" class="form-control" [(ngModel)]="selectedCustomer.customerId" name="customerId" readonly>
           </div>
           <div class="mb-3">
             <label class="form-label">Customer Mail</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.email"  name="customerMail">
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.email" name="customerMail"required  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #mailRef="ngModel">
+            <div  *ngIf="mailRef.invalid && mailRef.touched" 
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Valid email is required
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Policy Id</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedPol.policyId" name="policyId">
+            <input type="text" class="form-control" [(ngModel)]="selectedPol.policyId" name="policyId"  readonly>
           </div>
           <div class="mb-3">
             <label class="form-label">Agent Id</label>
-            <input type="number" class="form-control" [(ngModel)]="agent.agentId" name="agentId">
+            <input type="number" class="form-control" [(ngModel)]="agent.agentId" name="agentId"  readonly>
           </div>
           <div class="mb-3">
             <label class="form-label">Claim Amount</label>
-            <input type="number" class="form-control" ngModel name="claimAmount">
+            <input type="number" class="form-control" ngModel name="claimAmount" min="15000" required #claimAmountRef="ngModel">
+            <div *ngIf="claimAmountRef.invalid && claimAmountRef.touched"
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Claim amount should be greater than 10000
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Status</label>
-            <input type="text" class="form-control" [(ngModel)]="claimStatus" name="claimStatus"  readonly>
+            <input type="text" class="form-control" [(ngModel)]="claimStatus" name="claimStatus" readonly>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="claimForm.invalid">
             CREATE
           </button>
           <button type="button" class="btn btn-secondary" ata-bs-dismiss="modal">Cancel</button>

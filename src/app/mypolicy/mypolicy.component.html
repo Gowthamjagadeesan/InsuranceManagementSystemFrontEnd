@@ -7,11 +7,13 @@
         </div>
       </div>
       <div class="container mt-3">
-        <div class="row">
+        <div class="row" *ngIf="policies && policies.length > 0; else noPolicies">
           <div class="col-md-3 mb-4" *ngFor="let policy of policies">
             <div class="fancy-hover card policy">
               <div class="card-body text-center">
-                <img src="{{policy.policyId}}.png" alt="LOGO" style="height: 80px; width:  80px;">
+                <img [src]="policy.policyId + '.png'" alt="LOGO" 
+               onerror="this.onerror=null; this.src='insurance.png'" 
+               style="height: 80px; width: 80px;">
                 <p class="card-text mt-4">{{ policy.policyType }}</p>
               </div>
               <button class="btn btn-outline btn-light " data-bs-toggle="modal" data-bs-target="#createClaim"
@@ -19,6 +21,17 @@
             </div>
           </div>
         </div>
+        <ng-template #noPolicies>
+          <div class="alert alert-info text-center mt-4">
+            <strong>No Policies have been created yet Be patient and discover more .</strong>
+            <!-- <div class="mt-3">
+              <button class="btn btn-primary" (click)="goToPolicies()">
+                <i class="bi bi-arrow-left"></i>
+                Go to My Policies
+              </button>
+            </div> -->
+          </div>
+        </ng-template>
       </div>
     
     </div>
@@ -34,23 +47,31 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Customer Id</label>
-            <input type="number" class="form-control" [(ngModel)]="customerId"  name="customerId">
+            <input type="number" class="form-control" [(ngModel)]="customerId"  name="customerId" readonly>
           </div>
           <div class="mb-3">
             <label class="form-label">Customer Mail</label>
-            <input type="text" class="form-control" ngModel  name="customerMail">
+            <input type="text" class="form-control" ngModel  name="customerMail"required  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #mailRef="ngModel">
+            <div  *ngIf="mailRef.invalid && mailRef.touched" 
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Valid email is required
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Policy Id</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedPol.policyId" name="policyId">
+            <input type="text" class="form-control" [(ngModel)]="selectedPol.policyId" name="policyId" readonly>
           </div>
           <div class="mb-3">
             <label class="form-label">Agent Id</label>
-            <input type="number" class="form-control" [(ngModel)]="agent.agentId" name="agentId">
+            <input type="number" class="form-control" [(ngModel)]="agent.agentId" name="agentId" readonly>
           </div>
           <div class="mb-3">
             <label class="form-label">Claim Amount</label>
-            <input type="number" class="form-control" ngModel name="claimAmount">
+            <input type="number" class="form-control" ngModel name="claimAmount"min="15000" required #claimAmountRef="ngModel">
+            <div *ngIf="claimAmountRef.invalid && claimAmountRef.touched"
+            class="alert alert-danger alert-custom mt-2 mx-auto" >
+             Claim amount should be greater than 10000
+             </div>
           </div>
           <div class="mb-3">
             <label class="form-label">Status</label>
