@@ -3,6 +3,7 @@ import { ListcustomerService } from '../listcustomer.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { CLaimService } from '../claim.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mypolicy',
@@ -16,7 +17,7 @@ export class MypolicyComponent {
   selectedPol: Policy | null = null;
   customerId: any | null = null;
   claimStatus = "FILLED";
-  constructor(private customerService: ListcustomerService, private listCust:ListcustomerService,private claimService:CLaimService) {
+  constructor(private customerService: ListcustomerService, private listCust:ListcustomerService,private claimService:CLaimService,private router:Router) {
     // This service should be injected to fetch customer data
     const custId = sessionStorage.getItem("custId")
     console.log("Customer ID from session storage:", custId);
@@ -33,6 +34,9 @@ export class MypolicyComponent {
       this.claimService.createClaim(claim).subscribe({
         next: (response) =>{
           console.log(response)
+          alert("Claim created successfully");
+          this.router.navigate(['/myclaim']);
+          
         }
       })
   

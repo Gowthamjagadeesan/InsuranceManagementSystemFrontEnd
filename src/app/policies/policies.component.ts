@@ -40,6 +40,7 @@ export class PoliciesComponent {
       {
         next: (response) => {
           console.log(response);
+          alert("Policy updated successfully");
         }
       }
     )
@@ -63,6 +64,7 @@ export class PoliciesComponent {
     this.polService.addPolicy(policy).subscribe({
       next: (response) => {
         console.log(response);
+        alert("Policy added successfully");
 
       }
     })
@@ -72,6 +74,7 @@ export class PoliciesComponent {
     this.polService.deletePolicy(policyId).subscribe({
       next: (response) => {
         console.log("Policy deleted successfully:", response);
+        alert("Policy deleted successfully");
        
       }
     });
@@ -91,6 +94,8 @@ export class PoliciesComponent {
       {
         next: (response) => {
           console.log(response);
+          alert("Policy enrolled successfully");
+          this.router.navigate(["/mypolicy"]);
 
         }
       }

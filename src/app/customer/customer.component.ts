@@ -102,6 +102,7 @@ export class CustomerComponent implements OnInit {
       {
         next: (response) => {
           console.log(response)
+          alert("Policy assigned to customer successfully");
         }
       }
     )
@@ -119,6 +120,7 @@ export class CustomerComponent implements OnInit {
     this.claimService.createClaim(claim).subscribe({
       next: (response) =>{
         console.log(response)
+        alert("Claim created successfully");
       }
     })
 
@@ -132,6 +134,7 @@ export class CustomerComponent implements OnInit {
           next: (response => console.log(response))
         }
       )
+      alert("Customer updated successfully");
       window.location.reload();
     }
   }
@@ -169,6 +172,7 @@ export class CustomerComponent implements OnInit {
         {
           next: (response) => {
             console.log(response)
+            alert("Customer deleted successfully");
           }
         }
       )

@@ -30,6 +30,7 @@ export class MyclaimComponent {
       this.claimService.updateCLaim(claim).subscribe({
         next:(response) =>{
           console.log(response);
+          alert("Claim updated successfully");
         }
       })
     }
@@ -42,6 +43,7 @@ export class MyclaimComponent {
       this.myClaimService.deleteClaim(claimId).subscribe({
         next: (response) => {
           console.log(response);
+          alert("Claim deleted successfully");
           window.location.reload();
             }
           });

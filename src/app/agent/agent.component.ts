@@ -154,6 +154,7 @@ export class AgentComponent {
         {
           next: (response) => {
             console.log(response)
+            
           }
         }
       )
@@ -169,6 +170,7 @@ export class AgentComponent {
           {
             next: (response) => {
               console.log(response)
+              
             }
           }
         )
