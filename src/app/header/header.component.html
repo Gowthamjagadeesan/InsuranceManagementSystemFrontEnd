@@ -1,153 +1,5 @@
-<!-- <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">LIC</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/home">HOME</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">POLICIES</a>
-          </li>    
-        </ul>
-        <ul class="navbar-nav  navbar-right">
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/login">LOGIN</a>
-              </li>
-        </ul>
-      </div>
-    </div>
-  </nav> 
-  -->
-<!-- 
-<nav class="navbar navbar-expand-lg bg-info  fixed-top">
-  <div class="container">
-    
-    <a class="navbar-brand text-dark" href="#">
-     
-      <img style="width: 180px" src="logo.png" alt="Insurance Logo">
-    </a>
-    
-    <button class="navbar-toggler text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      @if( isLogedIn && !isCustomer ){
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/agent-home" href="#">HOME</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/policy-op" href="#">POLICIES</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/cust-op" href="#">CUSTOMER</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/claim" href="#">CLAIM</a>
-        </li>
-        @if(isAdmin){
-          <li class="nav-item">
-            <a class="nav-link text-dark" routerLink="/agent" href="#">AGENT</a>
-          </li>
-        }
-      </ul>
-
-      }
-      @else if(isLogedIn && isCustomer){
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/cust-home" href="#">HOME</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/policy-op" href="#">POLICIES</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/myclaim" href="#">CLAIM</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/about-us" href="#">ABOUT US</a>
-        </li>
-
-      </ul>
-
-      }
-
-
-      
-      <ul class="navbar-nav ms-auto">
-        @if(!isLogedIn){
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/login">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark" routerLink="/register" href="#">Register</a>
-        </li>
-        }
-        @else{
-        @if(isCustomer){
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/notification" >
-            <div class="icon-wrapper">
-              <span class="bell-icon">🔔</span>
-              <span *ngIf="notificationCount > 0" class="badge-notification">
-                {{ notificationCount }}
-                <span class="visually-hidden">unread messages</span>
-              </span>
-            </div>
-          </a>
-        </li>
-
-        }
-        <li class="nav-item mt-1">
-          <a class="nav-link text-dark" (click)="logout()">Logout</a>
-        </li>
-        }
-
-        <li class="nav-item mt-1">
-          <a class="nav-link text-dark" href="#"> | </a>
-        </li>
-        @if(!isLogedIn){
-        <li class="nav-item ">
-          <a class="nav-link text-dark " href=""><i class="fa-brands fa-facebook "></i></a>
-
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark " href="#"><i class="fa-brands fa-x-twitter"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark " href="#"><i class="fa-brands fa-linkedin"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-dark " href="#"><i class="fa-brands fa-instagram"></i></a>
-        </li>
-        }
-        @else if(isLogedIn && isCustomer){
-
-        <li class="nav-item mt-2">
-          <img src="user.png" alt="User Icon" (click)="loadUser()" data-bs-toggle="modal" data-bs-target="#updateCust"
-            style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px; cursor: pointer;">
-        </li>
-        }
-        @else if(isLogedIn && role === 'agent'){
-        <li class="nav-item mt-1">
-          <img src="user.png" alt="User Icon" (click)="loadUser()" data-bs-toggle="modal" data-bs-target="#updateAgent"
-            style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px; cursor: pointer;">
-        </li>
-        }
-      </ul>
-    
-    </div>
-  </div>
-</nav>
-<router-outlet /> -->
-
-<nav class="navbar navbar-expand-lg bg-info fixed-top">
+<!-- <nav class="navbar navbar-expand-lg bg-info fixed-top">
   <div class="container">
     <a class="navbar-brand text-dark" href="#">
       <img style="width: 180px" src="logo.png" alt="Insurance Logo">
@@ -300,7 +152,7 @@
 </div>
 
 
-<!-- Modal for Update -->
+
 <div *ngIf="selectedCustomer" class="modal fade" id="updateCust" tabindex="-1" aria-labelledby="updateCustLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -357,4 +209,221 @@
 <div *ngIf="notifications" class="modal fade" id="notification" tabindex="-1" aria-labelledby="notificationLabel"
   aria-hidden="true">
 
+</div> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Insurance App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-info fixed-top">
+  <div class="container">
+    <a class="navbar-brand text-dark" href="#">
+      <img style="width: 180px" src="logo.png" alt="Insurance Logo" class="img-fluid">
+    </a>
+    <button class="navbar-toggler text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      @if( isLogedIn && !isCustomer ){
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/agent-home" routerLinkActive="active" href="#">HOME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/policy-op" routerLinkActive="active" href="#">POLICIES</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/cust-op" routerLinkActive="active" href="#">CUSTOMER</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/claim" routerLinkActive="active" href="#">CLAIM</a>
+        </li>
+        @if(isAdmin){
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/agent" routerLinkActive="active" href="#">AGENT</a>
+        </li>
+        }
+      </ul>
+      }
+      @else if(isLogedIn && isCustomer){
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/cust-home" routerLinkActive="active" href="#">HOME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/policy-op" routerLinkActive="active" href="#">POLICIES</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/myclaim" routerLinkActive="active" href="#">CLAIM</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/about-us" routerLinkActive="active" href="#">ABOUT US</a>
+        </li>
+      </ul>
+      }
+
+      <ul class="navbar-nav ms-auto">
+        @if(!isLogedIn){
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/login" routerLinkActive="active">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/register" routerLinkActive="active" href="#">Register</a>
+        </li>
+        }
+        @else{
+        @if(isCustomer){
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/notification" routerLinkActive="active">
+            <div class="position-relative d-inline-block"> <span class="bell-icon">🔔</span>
+              <span *ngIf="notificationCount > 0" class="badge rounded-pill bg-danger text-white position-absolute top-0 start-100 translate-middle">
+                {{ notificationCount }}
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            </div>
+          </a>
+        </li>
+        }
+        <li class="nav-item mt-1">
+          <a class="nav-link text-dark" (click)="logout()">Logout</a>
+        </li>
+        }
+
+        <li class="nav-item mt-1">
+          <a class="nav-link text-dark" href="#"> | </a>
+        </li>
+        @if(!isLogedIn){
+        <li class="nav-item ">
+          <a class="nav-link text-dark " href="https://www.facebook.com/"><i class="fa-brands fa-facebook "></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark " href="https://x.com/?lang=en-in"><i class="fa-brands fa-x-twitter"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark " href="https://www.linkedin.com/login"><i class="fa-brands fa-linkedin"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark " href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+        </li>
+        }
+        @else if(isLogedIn && isCustomer){
+
+        <li class="nav-item mt-2">
+          <img src="user.png" alt="User Icon" (click)="loadUser()" data-bs-toggle="modal" data-bs-target="#updateCust"
+            style="width: 30px; height: 30px;" class="rounded-circle ms-2 img-fluid">
+        </li>
+        }
+        @else if(isLogedIn && role === 'agent'){
+        <li class="nav-item mt-1">
+          <img src="user.png" alt="User Icon" (click)="loadUser()" data-bs-toggle="modal" data-bs-target="#updateAgent"
+            style="width: 30px; height: 30px;" class="rounded-circle ms-2 img-fluid">
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>
+<router-outlet />
+
+<div *ngIf="selectedAgent" class="modal fade" id="updateAgent" tabindex="-1" aria-labelledby="updateAgentLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="update(agentForm.value)" #agentForm="ngForm">
+        <div class="modal-header bg-info text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Agent Name</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedAgent.name" #agentNameRef="ngModel" name="name"
+              required minlength="3">
+            <div *ngIf="agentNameRef.invalid && agentNameRef.touched"
+              class="alert alert-danger mt-2 mx-auto"> Valid name is required
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Agent Email:</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedAgent.email" name="email"
+              #agentEmailRef="ngModel" required min="1">
+            <div *ngIf="agentEmailRef.invalid && agentEmailRef.touched"
+              class="alert alert-danger mt-2 mx-auto"> Valid mail is required
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" [disabled]="agentForm.invalid" data-bs-dismiss="modal">
+            Update
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+
+<div *ngIf="selectedCustomer" class="modal fade" id="updateCust" tabindex="-1" aria-labelledby="updateCustLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow">
+      <form (ngSubmit)="update(custForm.value)" #custForm="ngForm">
+        <div class="modal-header bg-info text-white">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Customer Name</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.name" name="name" required
+              minlength="3" #nameRef="ngModel">
+            <div *ngIf="nameRef.invalid && nameRef.touched" class="alert alert-danger mt-2 mx-auto"> Valid name is required
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Email:</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.email" name="email" required
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #mailRef="ngModel">
+            <div *ngIf="mailRef.invalid && mailRef.touched" class="alert alert-danger mt-2 mx-auto"> Valid email is required
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Phone</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedCustomer.customerPhone" name="customerPhone"
+              pattern="^[6-9]\d{9}$" required #phoneRef="ngModel">
+            <div *ngIf="phoneRef.invalid && phoneRef.touched" class="alert alert-danger mt-2 mx-auto"> Valid phone number is required
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Customer Address</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedCustomer.customerAddress"
+              name="customerAddress" required minlength="4" #addressRef="ngModel">
+            <div *ngIf="addressRef.invalid && addressRef.touched" class="alert alert-danger mt-2 mx-auto"> Valid address is required
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal" [disabled]="custForm.invalid">
+            Update
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="notifications" class="modal fade" id="notification" tabindex="-1" aria-labelledby="notificationLabel"
+  aria-hidden="true">
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
